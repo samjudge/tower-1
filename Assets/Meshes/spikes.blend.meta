@@ -1,0 +1,188 @@
+fileFormatVersion: 2
+guid: b90e7a9e95f4e7746bcce4ac20284e06
+timeCreated: 1497256565
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Cone
+    100002: Cone_001
+    100004: Cone_002
+    100006: Cone_003
+    100008: Cone_004
+    100010: Cone_005
+    100012: Cone_006
+    100014: Cone_007
+    100016: Cone_008
+    100018: Cone_009
+    100020: Cone_010
+    100022: Cone_011
+    100024: Cone_012
+    100026: Cone_013
+    100028: Cone_014
+    100030: Cone_015
+    100032: Cone_016
+    100034: Cone_017
+    100036: Cone_018
+    100038: Cone_019
+    100040: Cone_020
+    100042: Cone_021
+    100044: Cone_022
+    100046: //RootNode
+    400000: Cone
+    400002: Cone_001
+    400004: Cone_002
+    400006: Cone_003
+    400008: Cone_004
+    400010: Cone_005
+    400012: Cone_006
+    400014: Cone_007
+    400016: Cone_008
+    400018: Cone_009
+    400020: Cone_010
+    400022: Cone_011
+    400024: Cone_012
+    400026: Cone_013
+    400028: Cone_014
+    400030: Cone_015
+    400032: Cone_016
+    400034: Cone_017
+    400036: Cone_018
+    400038: Cone_019
+    400040: Cone_020
+    400042: Cone_021
+    400044: Cone_022
+    400046: //RootNode
+    2300000: Cone
+    2300002: Cone_001
+    2300004: Cone_002
+    2300006: Cone_003
+    2300008: Cone_004
+    2300010: Cone_005
+    2300012: Cone_006
+    2300014: Cone_007
+    2300016: Cone_008
+    2300018: Cone_009
+    2300020: Cone_010
+    2300022: Cone_011
+    2300024: Cone_012
+    2300026: Cone_013
+    2300028: Cone_014
+    2300030: Cone_015
+    2300032: Cone_016
+    2300034: Cone_017
+    2300036: Cone_018
+    2300038: Cone_019
+    2300040: Cone_020
+    2300042: Cone_021
+    2300044: Cone_022
+    3300000: Cone
+    3300002: Cone_001
+    3300004: Cone_002
+    3300006: Cone_003
+    3300008: Cone_004
+    3300010: Cone_005
+    3300012: Cone_006
+    3300014: Cone_007
+    3300016: Cone_008
+    3300018: Cone_009
+    3300020: Cone_010
+    3300022: Cone_011
+    3300024: Cone_012
+    3300026: Cone_013
+    3300028: Cone_014
+    3300030: Cone_015
+    3300032: Cone_016
+    3300034: Cone_017
+    3300036: Cone_018
+    3300038: Cone_019
+    3300040: Cone_020
+    3300042: Cone_021
+    3300044: Cone_022
+    4300000: Cone
+    4300002: Cone_001
+    4300004: Cone_002
+    4300006: Cone_003
+    4300008: Cone_004
+    4300010: Cone_005
+    4300012: Cone_006
+    4300014: Cone_007
+    4300016: Cone_008
+    4300018: Cone_009
+    4300020: Cone_010
+    4300022: Cone_011
+    4300024: Cone_012
+    4300026: Cone_013
+    4300028: Cone_014
+    4300030: Cone_015
+    4300032: Cone_016
+    4300034: Cone_017
+    4300036: Cone_018
+    4300038: Cone_019
+    4300040: Cone_020
+    4300042: Cone_021
+    4300044: Cone_022
+    7400000: Default Take
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
