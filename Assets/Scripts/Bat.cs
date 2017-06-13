@@ -42,6 +42,7 @@ public class Bat : Unit {
                 );
             if (hit.transform != null)
             {
+
                 this.Attack(Player);
             }
             else
@@ -49,12 +50,36 @@ public class Bat : Unit {
                 this.StartCoroutine(this.Move());
             }
         }
+        if (IsDead()) {
+            MonoBehaviour.Destroy(this.gameObject); //destroy on death
+        }
     }
 
-    protected void Attack(Unit u) {
+    private void OnMouseOver(){
+        if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1){
+            //TODO : make the mouse pointer a sword on hover
+        }
+    }
+
+    private void OnMouseExit(){
+        //TODO : make the mouse pointer normal again
+    }
+
+    void OnMouseDown(){
+        if (Player.AttackTimer > Player.EquippedWeapon.SwingTime)
+        {
+            Player.AttackTimer = 0;
+            if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1.1)
+            {
+                Player.Attack(this);
+            }
+        }
+    }
+
+    override public void Attack(Unit u) {
         Animator a = this.GetComponentInChildren<Animator>() as Animator;
         a.Play("BatAttack");
-        u.TakeDamage(2);
+        u.TakeDamage(this.EquippedWeapon.RollDice());
         this.InputLocked = false;
     }
 

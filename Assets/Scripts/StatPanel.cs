@@ -38,7 +38,7 @@ public class StatPanel : MonoBehaviour {
 		this.SetLevelLabel("1");
 		this.SetExpLabel("0");
 		this.SetArmourLabel("0");
-		this.SetDamageLabel("0");
+		this.SetDamageLabel(Player.EquippedWeapon.GetDmgRangeString());
 	}
 
 	private void SetNameLabel(string l){

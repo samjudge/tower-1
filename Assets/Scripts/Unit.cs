@@ -24,6 +24,8 @@ public abstract class Unit : MonoBehaviour {
 
     protected Vector3 target;
 
+    public Weapon EquippedWeapon;
+
     private bool CancelMovementFlag = false;
 
     /**
@@ -165,6 +167,8 @@ public abstract class Unit : MonoBehaviour {
     }
 
     abstract public void TakeDamage(float damage);
+
+    abstract public void Attack(Unit u);
 
     public bool IsDead()
     {

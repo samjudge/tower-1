@@ -1,25 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Player : Unit {
-
+    
 	public Camera PlayerCam;
 	public ActionLog ActionLog;
 	public Flasher RedFlasher;
 	public UIFillBar HPBar;
 	public GameOverScreen GameOverScreen;
 
+    public List<Item> Inventory;
 
-	
 	void Start () {
 		this.Hp = CalculateMaxHp();
 		this.Mp = CalculateMaxMp();
 		StartCoroutine(CameraFollow());
 	}
 
+    public float AttackTimer = 0f;
+
 	void Update () {
-		//check state
-		if(IsDead()){
+        //check state
+        AttackTimer += Time.deltaTime;
+        if (IsDead()){
 			GameOverScreen.MakeVisible(true);
 			return;
 		}
@@ -79,5 +83,16 @@ public class Player : Unit {
 		HPBar.UpdateBar(this.Hp,this.CalculateMaxHp());
 		this.ActionLog.WriteNewLine(this.GetRandomOuchString() + "! " + "You take "+ damage + " damage!");
 	}
+
+    override public void Attack(Unit u){
+        
+        Animator a = u.GetComponentInChildren<Animator>() as Animator;
+        a.Play("TakeDamage");
+        int roll = this.EquippedWeapon.RollDice();
+        this.ActionLog.WriteNewLine("You smack the enemy for " + roll +"!");
+        u.TakeDamage(roll);
+        this.InputLocked = false;
+    }
+
 
 }
