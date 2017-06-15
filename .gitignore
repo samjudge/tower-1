@@ -1,0 +1,11 @@
+.git
+.vs
+game_Data
+Library
+Temp
+Assembly-CShap.csproj
+Assembly-CShap-vs.csproj
+Tower-1.csproj
+Tower-1.sln
+Tower-1.userprefs
+Tower-1-csharp.sln

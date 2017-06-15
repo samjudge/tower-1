@@ -113,7 +113,7 @@ public class AStarPathfind {
 		return ((Node) this.OpenNodes[0]).position;
 	}
 
-	int MaxSearchDepth = 60;
+	int MaxSearchDepth = 100;
 
 	public virtual Node FindPath(Node Position){
 		ArrayList Adjacent = this.GetNeighborOpenNodes(Position);
