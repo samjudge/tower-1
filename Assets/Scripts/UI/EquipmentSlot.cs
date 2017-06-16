@@ -6,24 +6,20 @@ public class EquipmentSlot : ItemSlot
 {
     public Player Player;
     public string SlotName;
-    public Equipment DefaultItem;
 
     private void SwapItemWithHeld() {
         GameObject held = Hand.GetHeld();
         GameObject was = GetItemAndDetatch();
         if (held == null) {
             Hand.SetHeld(was);
-            //SetItemAndMakeChild(was);
+            Player.Equipment.SetToDefaultItem(this.SlotName);
             return;
         }
         if (CanEquipTo(held, this.SlotName)) {
-            Debug.Log("can equip");
             Hand.GetHeldAndRemoveAsChild();
-            
             SetItemAndMakeChild(held);
-            Player.Equipment[this.SlotName] = held.GetComponent<Equipment>() as Equipment;
+            Player.Equipment.Set(this.SlotName, held.GetComponent<Equipment>() as Equipment);
         } else {
-            Debug.Log("cannot equip");
             SetItemAndMakeChild(was);
         }
     }

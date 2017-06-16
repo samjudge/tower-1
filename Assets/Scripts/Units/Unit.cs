@@ -1,6 +1,59 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.Collections;
-using UnityEngine;
+using System.Collections.Generic;
+
+[Serializable]
+public class Equipped {
+    public Equipped(String SlotName, Equipment DefaultItem) {
+        this.SlotName = SlotName;
+        this.DefaultItem = DefaultItem;
+    }
+    public Equipment DefaultItem;
+    public String SlotName;
+    public Equipment Item;
+}
+
+[Serializable]
+public class EquipmentSlots {
+    public Equipped[] Equipment;
+    public EquipmentSlots(Equipped[] Slots) {
+        Equipment = new Equipped[Slots.Length];
+        for (int x = 0; x < Equipment.Length; x++) {
+            Equipment[x] = Slots[x];
+        }
+    }
+
+    public Equipment Get(String s) {
+        foreach (Equipped e in Equipment) {
+            if (e.SlotName == s) {
+                if (e.Item == null) {
+                    return e.DefaultItem;
+                }
+                return e.Item;
+            }
+        }
+        return null;
+    }
+
+    public void Set(string s, Equipment i) {
+        for (int x = 0; x < Equipment.Length; x++) {
+            Equipped e = Equipment[x];
+            if (e.SlotName == s) {
+                e.Item = i;
+            }
+        }
+    }
+
+    public void SetToDefaultItem(string s) {
+        for (int x = 0; x < Equipment.Length; x++) {
+            Equipped e = Equipment[x];
+            if (e.SlotName == s) {
+                e.Item = e.DefaultItem;
+            }
+        }
+    }
+}
 
 public abstract class Unit : MonoBehaviour {
     public float Hp = 0;
@@ -24,7 +77,7 @@ public abstract class Unit : MonoBehaviour {
 
     protected Vector3 target;
 
-    public Weapon EquippedWeapon;
+    public EquipmentSlots Equipment;
 
     private bool CancelMovementFlag = false;
 
