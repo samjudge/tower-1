@@ -1,14 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Bat : Unit {
 
     public Player Player;
+    public Weapon Fangs;
     public float TickActionsEvery = 5f;
     private float TickActionsCurrentTimer = 0;
 
     void Start() {
+        this.Equipment = new EquipmentSlots(new Equipped[] { new Equipped("Left", Fangs) });
     }
 
     void Update() {
@@ -51,7 +54,8 @@ public class Bat : Unit {
             }
         }
         if (IsDead()) {
-            MonoBehaviour.Destroy(this.gameObject); //destroy on death
+            Animator a = this.GetComponentInChildren<Animator>() as Animator;
+            a.Play("SwirlyDeath");
         }
     }
 
@@ -66,7 +70,7 @@ public class Bat : Unit {
     }
 
     void OnMouseDown(){
-        if (Player.AttackTimer > Player.EquippedWeapon.SwingTime)
+        if (Player.AttackTimer > (Equipment.Get("Left").GetComponent<Weapon>() as Weapon).SwingTime)
         {
             Player.AttackTimer = 0;
             if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1.1)
@@ -79,7 +83,7 @@ public class Bat : Unit {
     override public void Attack(Unit u) {
         Animator a = this.GetComponentInChildren<Animator>() as Animator;
         a.Play("BatAttack");
-        u.TakeDamage(this.EquippedWeapon.RollDice());
+        u.TakeDamage((Equipment.Get("Left").GetComponent<Weapon>() as Weapon).RollDice());
         this.InputLocked = false;
     }
 

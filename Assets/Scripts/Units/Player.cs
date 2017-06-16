@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,18 +10,21 @@ public class Player : Unit {
 	public Flasher RedFlasher;
 	public UIFillBar HPBar;
 	public GameOverScreen GameOverScreen;
+    public Weapon Fist;
+    public Equipment Nothing;
 
-    public Dictionary<string, Item> Equipment;
-
-	void Start () {
+    void Start () {
 		this.Hp = CalculateMaxHp();
 		this.Mp = CalculateMaxMp();
-        this.Equipment = new Dictionary<string, Item>();
-        this.Equipment.Add("Left",null);
-        this.Equipment.Add("Right", null);
-        this.Equipment.Add("Head", null);
-        this.Equipment.Add("Body", null);
-        this.Equipment.Add("Foot", null);
+        this.Equipment = new EquipmentSlots(
+            new Equipped[] {
+                new Equipped("Left", Fist),
+                new Equipped("Right", Fist),
+                new Equipped("Head", Nothing),
+                new Equipped("Body", Nothing),
+                new Equipped("Feet", Nothing),
+            }
+        );
         StartCoroutine(CameraFollow());
 	}
 
@@ -53,8 +57,6 @@ public class Player : Unit {
 			this.RotateBy(90);
 		}
 	}
-
-	
 
 	/** 
  	 * A coroutine to force the main camera to share the same position as this Player object
@@ -94,7 +96,7 @@ public class Player : Unit {
         
         Animator a = u.GetComponentInChildren<Animator>() as Animator;
         a.Play("TakeDamage");
-        int roll = this.EquippedWeapon.RollDice();
+        int roll = (Equipment.Get("Left").GetComponent<Weapon>() as Weapon).RollDice();
         this.ActionLog.WriteNewLine("you smack the enemy for " + roll +"!");
         u.TakeDamage(roll);
         this.InputLocked = false;
