@@ -8,19 +8,18 @@ public class EquipmentSlot : ItemSlot
     public string SlotName;
 
     private void SwapItemWithHeld() {
-        GameObject held = Hand.GetHeld();
-        GameObject was = GetItemAndDetatch();
-        if (held == null) {
-            Hand.SetHeld(was);
-            Player.Equipment.SetToDefaultItem(this.SlotName);
-            return;
-        }
-        if (CanEquipTo(held, this.SlotName)) {
-            Hand.GetHeldAndRemoveAsChild();
-            SetItemAndMakeChild(held);
-            Player.Equipment.Set(this.SlotName, held.GetComponent<Equipment>() as Equipment);
+        GameObject held = this.Hand.GetHeldAndRemoveAsChild();
+        if (CanEquip(held)) {
+            GameObject was = this.GetItemAndDetatch();
+            this.Hand.SetHeld(was);
+            this.SetItemAndMakeChild(held);
+            if (held == null) {
+                Player.Equipment.SetToDefaultItem(SlotName);
+            } else {
+                Player.Equipment.Set(SlotName, held.GetComponent<Equipment>() as Equipment);
+            }
         } else {
-            SetItemAndMakeChild(was);
+            this.Hand.SetHeld(held);
         }
     }
     
@@ -28,11 +27,12 @@ public class EquipmentSlot : ItemSlot
         SwapItemWithHeld();
     }
 
-    private bool CanEquipTo(GameObject i, string avail){
+    private bool CanEquip(GameObject i){
+        if (i == null) return true;
         if (i.GetComponent<Item>().GetType().IsSubclassOf(typeof(Equipment))) {
             Equipment e = i.GetComponent<Equipment>() as Equipment;
             foreach(string t in e.EquippableTo) {
-                if (avail == t) {
+                if (SlotName == t) {
                     return true;
                 }
             }

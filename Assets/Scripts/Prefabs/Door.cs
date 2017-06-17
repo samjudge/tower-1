@@ -6,10 +6,24 @@ public class Door : MonoBehaviour {
 
     public Player Player;
     bool isOpended = false;
+    public Hand Hand;
+    public string NeedsKeyOfName = "";
 
-    void OnMouseDown()
-    {
-        if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1)
+    void OnMouseDown(){
+        if (this.NeedsKeyOfName != "") {
+            GameObject Held = this.Hand.GetHeld();
+            if (Held != null) {
+                Item Item = this.Hand.GetHeld().GetComponent<Item>() as Item;
+                if (Item.Name != NeedsKeyOfName) {
+                    Player.ActionLog.WriteNewLine("the key doesn't seem to fit.");
+                    return;
+                }
+            } else {
+                Player.ActionLog.WriteNewLine("the door is locked tight.");
+                return;
+            }
+        }
+        if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1.2)
         {
             if (!isOpended)
             {

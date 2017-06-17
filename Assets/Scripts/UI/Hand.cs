@@ -16,6 +16,13 @@ public class Hand : MonoBehaviour
         return this.HeldThing;
     }
 
+    public bool IsHoldingThing() {
+        if (HeldThing != null) {
+            return true;
+        }
+        return false;
+    }
+
     public GameObject GetHeldAndRemoveAsChild() {
         this.transform.DetachChildren();
         GameObject t = this.HeldThing;
@@ -23,18 +30,14 @@ public class Hand : MonoBehaviour
         return t;
     }
 
-    public bool passiveMode = true;
-
     void Update()
     {
         RectTransform rectTransform = this.GetComponent<RectTransform>() as RectTransform;
         rectTransform.position = Input.mousePosition;
-        if (passiveMode == true) {
-            if (HeldThing != null) {
-                if (HeldThing.transform.parent != this.transform){
-                    HeldThing.transform.SetParent(this.transform);
-                    (HeldThing.GetComponent<Image>() as Image).rectTransform.localPosition = new Vector3(0, 0, 0);
-                }
+        if (HeldThing != null) {
+            if (HeldThing.transform.parent != this.transform){
+                HeldThing.transform.SetParent(this.transform);
+                (HeldThing.GetComponent<Image>() as Image).rectTransform.localPosition = new Vector3(0, 0, 0);
             }
         }
     }

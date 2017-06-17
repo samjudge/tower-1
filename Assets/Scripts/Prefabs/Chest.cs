@@ -10,7 +10,7 @@ public class Chest : MonoBehaviour {
     bool isOpended = false;
 
     void OnMouseDown(){
-        if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1){
+        if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1.2){
             if (!isOpended){
                 isOpended = !isOpended;
                 StartCoroutine(Open());
@@ -19,7 +19,7 @@ public class Chest : MonoBehaviour {
     }
 
     private IEnumerator Open() {
-        Player.ActionLog.WriteNewLine("you open the chest");
+        Player.ActionLog.WriteNewLine("you open the chest.");
         Pickup p = this.PickupFactory.MakePickup(Contains);
         p.transform.position = this.transform.position;
         MonoBehaviour.Destroy(this.gameObject); //destroy this chest

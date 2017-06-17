@@ -33,11 +33,10 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler {
     }
 
     virtual public void OnPointerClick(PointerEventData e){
-        if (this.Item != null) {
-            GameObject t = this.GetItemAndDetatch();
-            Hand.SetHeld(t);
-        } else {
-            this.SetItemAndMakeChild(Hand.GetHeldAndRemoveAsChild());
-        }
+        //swap hand with slot
+        GameObject held = this.Hand.GetHeldAndRemoveAsChild();
+        GameObject was = this.GetItemAndDetatch();
+        this.Hand.SetHeld(was);
+        this.SetItemAndMakeChild(held);
     }
 }
