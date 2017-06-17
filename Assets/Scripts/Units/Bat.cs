@@ -70,11 +70,9 @@ public class Bat : Unit {
     }
 
     void OnMouseDown(){
-        if (Player.AttackTimer > (Equipment.Get("Left").GetComponent<Weapon>() as Weapon).SwingTime)
-        {
+        if (Player.AttackTimer >= (Player.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).SwingTime) {
             Player.AttackTimer = 0;
-            if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1.1)
-            {
+            if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1.1) {
                 Player.Attack(this);
             }
         }

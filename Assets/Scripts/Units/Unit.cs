@@ -58,15 +58,13 @@ public class EquipmentSlots {
 public abstract class Unit : MonoBehaviour {
     public float Hp = 0;
 
-    public float CalculateMaxHp()
-    {
+    public float CalculateMaxHp() {
         return this.Strength * 5;
     }
 
     public float Mp = 0;
 
-    public float CalculateMaxMp()
-    {
+    public float CalculateMaxMp() {
         return this.Intelligence * 3;
     }
 
@@ -86,8 +84,7 @@ public abstract class Unit : MonoBehaviour {
 	 * @param x the Forward/Backward tiles to shift this object by
 	 * @param y the Left/Right tiles to shift this object by
 	 */
-    public void ShiftPosition(float x, float y)
-    {
+    public void ShiftPosition(float x, float y) {
         if (InputLocked) return;
         InputLocked = true;
         Vector3 translateTo = new Vector3(
@@ -108,8 +105,7 @@ public abstract class Unit : MonoBehaviour {
  	 * rotoate this game object
  	 * @param rotateBy the number of degrees you wish you rotate this object
  	 */
-    public void RotateBy(float rotateBy)
-    {
+    public void RotateBy(float rotateBy) {
         if (InputLocked) return;
         InputLocked = true;
         Vector3 rotation = this.transform.rotation.eulerAngles;
@@ -124,13 +120,11 @@ public abstract class Unit : MonoBehaviour {
 
     protected Vector3 targetRotation;
 
-    protected IEnumerator Rotate()
-    {
+    protected IEnumerator Rotate() {
         Quaternion origin = this.transform.rotation;
         float range = Quaternion.Angle(this.transform.rotation, Quaternion.Euler(targetRotation));
         float t = 0;
-        while (range > 1)
-        {
+        while (range > 1) {
             if (this.CancelMovementFlag == true)
             {
                 break;
@@ -140,8 +134,7 @@ public abstract class Unit : MonoBehaviour {
             this.transform.rotation = Quaternion.Lerp(origin, Quaternion.Euler(targetRotation), t * 2);
             yield return null;
         }
-        if (this.CancelMovementFlag == true)
-        {
+        if (this.CancelMovementFlag == true) {
             this.CancelMovementFlag = false;
             this.transform.rotation = origin;
         }
@@ -190,7 +183,7 @@ public abstract class Unit : MonoBehaviour {
         InputLocked = false;
     }
 
-    private GameObject GetUnitInfo(Vector3 to){
+    private GameObject GetUnitInfo(Vector3 to) {
         LayerMask Mask = LayerMask.GetMask("Player","Enemies");
         RaycastHit hit = new RaycastHit();
         Physics.Linecast(
@@ -214,8 +207,7 @@ public abstract class Unit : MonoBehaviour {
      * launch point
      * @param flag - the new value of the CancelMovementFlag
      */
-    public void SetCancelMovementFlag(bool flag)
-    {
+    public void SetCancelMovementFlag(bool flag) {
         this.CancelMovementFlag = flag;
     }
 
@@ -223,8 +215,7 @@ public abstract class Unit : MonoBehaviour {
 
     abstract public void Attack(Unit u);
 
-    public bool IsDead()
-    {
+    public bool IsDead() {
         if (this.Hp <= 0)
         {
             return true;

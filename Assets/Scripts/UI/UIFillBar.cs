@@ -6,14 +6,25 @@ public class UIFillBar : MonoBehaviour {
 	
 	private Image Bar;
 	public Image EffectBar;
+    public bool ChangeColorIfFilled = false;
+    public Color FilledColor;
+    public Color UnfilledColor;
 
-	void Start(){
+    void Start(){
 		this.Bar = this.GetComponent<Image>() as Image;
 	}
 	
 	public void UpdateBar(float val, float maxVal){
 		this.Bar.fillAmount = val/maxVal;
-		StartCoroutine(DoEffect());
+        if (ChangeColorIfFilled) {
+            if (this.Bar.fillAmount == 1) {
+                (this.Bar.GetComponent<Image>() as Image).color = FilledColor;
+            } else {
+                (this.Bar.GetComponent<Image>() as Image).color = UnfilledColor;
+            }
+        }
+        
+        StartCoroutine(DoEffect());
 	}
 
 	private IEnumerator DoEffect(){

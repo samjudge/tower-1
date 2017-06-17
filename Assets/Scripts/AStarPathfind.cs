@@ -124,6 +124,9 @@ public class AStarPathfind {
 			this.ClosedNodes.Add(Position);
 			Adjacent = this.GetNeighborOpenNodes(Position);
 			Adjacent.Sort();
+            if (Adjacent.Count < 1) {
+                break;
+            }
 			Position = Adjacent[0] as Node;
 			this.OpenNodes.AddRange(Adjacent);
 			if(Position.value <= 1f){

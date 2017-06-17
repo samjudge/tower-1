@@ -12,6 +12,7 @@ public class ItemFactory : MonoBehaviour
 
     //Items
     public Item TestKey;
+    public Item Level1BrassKey;
 
     public Item MakeItem(string name) {
         FieldInfo Property = this.GetType().GetField(name);

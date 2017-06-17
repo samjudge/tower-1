@@ -9,7 +9,9 @@ public class Player : Unit {
 	public ActionLog ActionLog;
 	public Flasher RedFlasher;
 	public UIFillBar HPBar;
-	public GameOverScreen GameOverScreen;
+    public UIFillBar AttackCDBar;
+    public GameOverScreen GameOverScreen;
+
     public Weapon Fist;
     public Equipment Nothing;
 
@@ -56,7 +58,9 @@ public class Player : Unit {
 		if(Input.GetKeyDown(KeyCode.E)){
 			this.RotateBy(90);
 		}
-	}
+        AttackCDBar.UpdateBar(this.AttackTimer,(this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).SwingTime);
+
+    }
 
 	/** 
  	 * A coroutine to force the main camera to share the same position as this Player object
