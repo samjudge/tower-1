@@ -37,6 +37,12 @@ public class Hand : MonoBehaviour
         if (HeldThing != null) {
             if (HeldThing.transform.parent != this.transform){
                 HeldThing.transform.SetParent(this.transform);
+                //for some reason, when i set the parent above,
+                //the image scales inverse to the screen resolution
+                //i've checked reference pixels, anchoring, turning setParent to false
+                //but it always is just something weird
+                //setting it directly below here seems to work fine for all resolutions though
+                HeldThing.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 (HeldThing.GetComponent<Image>() as Image).rectTransform.localPosition = new Vector3(0, 0, 0);
             }
         }
