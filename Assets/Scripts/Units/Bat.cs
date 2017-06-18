@@ -7,8 +7,9 @@ public class Bat : Unit {
 
     public Player Player;
     public Weapon Fangs;
-    public float TickActionsEvery = 5f;
+    public float TickActionsEvery = 2f;
     private float TickActionsCurrentTimer = 0;
+    private bool DeadFlag = false;
 
     void Start() {
         this.Equipment = new EquipmentSlots(new Equipped[] { new Equipped("Left", Fangs) });
@@ -19,10 +20,19 @@ public class Bat : Unit {
         this.transform.rotation = Quaternion.Euler(
             new Vector3(
                 Player.transform.rotation.eulerAngles.x,
-                Player.transform.rotation.eulerAngles.y+180,
+                Player.transform.rotation.eulerAngles.y + 180,
                 Player.transform.rotation.eulerAngles.z
             )
         );
+        if (DeadFlag) {
+            return;
+        }
+        if (IsDead()) {
+            Animator a = this.GetComponentInChildren<Animator>() as Animator;
+            DeadFlag = true;
+            a.Play("SwirlyDeath");
+            return;
+        }
         this.TickActionsCurrentTimer += Time.deltaTime;
         if(!InputLocked && TickActionsCurrentTimer > TickActionsEvery) {
             TickActionsCurrentTimer = 0f;
@@ -53,10 +63,6 @@ public class Bat : Unit {
                 this.StartCoroutine(this.Move());
             }
         }
-        if (IsDead()) {
-            Animator a = this.GetComponentInChildren<Animator>() as Animator;
-            a.Play("SwirlyDeath");
-        }
     }
 
     private void OnMouseOver(){
@@ -70,15 +76,19 @@ public class Bat : Unit {
     }
 
     void OnMouseDown(){
-        if (Player.AttackTimer >= (Player.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).SwingTime) {
-            Player.AttackTimer = 0;
-            if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1.1) {
-                Player.Attack(this);
-            }
+        if (DeadFlag) {
+            return;
         }
+        if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1.1) {
+            Player.Attack(this);
+        }
+        
     }
 
     override public void Attack(Unit u) {
+        if (DeadFlag) {
+            return;
+        }
         Animator a = this.GetComponentInChildren<Animator>() as Animator;
         a.Play("BatAttack");
         u.TakeDamage((Equipment.Get("Left").GetComponent<Weapon>() as Weapon).RollDice());
@@ -86,6 +96,11 @@ public class Bat : Unit {
     }
 
     override public void TakeDamage(float dmg) {
+        if (DeadFlag) {
+            return;
+        }
+        Animator a = this.GetComponentInChildren<Animator>() as Animator;
+        a.Play("TakeDamage");
         this.Hp -= dmg;
     }
 }

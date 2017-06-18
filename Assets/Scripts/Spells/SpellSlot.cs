@@ -38,8 +38,20 @@ public class SpellSlot : MonoBehaviour, IPointerClickHandler {
 
     public void Cast() {
         if (Spell != null) {
-            GameObject p = (Spell.GetComponent<Spell>() as Spell).Projectile;
-            GameObject Casted = Instantiate(p, Caster.transform.position,
+            GameObject Sp = (Spell.GetComponent<Spell>() as Spell).Projectile;
+            int Manacost = (Spell.GetComponent<Spell>() as Spell).ManaCost;
+            Player CasterUnitComponent = Caster.GetComponent<Player>() as Player;
+            //action on cooldown
+            if (CasterUnitComponent.AttackTimer < CasterUnitComponent.NextAttackTimerMin) {
+                return;
+            }
+            //not enough mana
+            if (CasterUnitComponent.Mp < Manacost) {
+                CasterUnitComponent.ActionLog.WriteNewLine("you are too drained to cast that spell!");
+                return;
+            }
+            //create spell projectile
+            GameObject Casted = Instantiate(Sp , Caster.transform.position,
                 Quaternion.Euler(
                     Caster.transform.rotation.eulerAngles.x - 90,
                     Caster.transform.rotation.eulerAngles.y,
@@ -52,12 +64,21 @@ public class SpellSlot : MonoBehaviour, IPointerClickHandler {
                     Caster.transform.rotation.eulerAngles.z
                 );
             (Casted.GetComponent<SpellProjectile>() as SpellProjectile).Caster = Caster;
+            //update player mp
+            CasterUnitComponent.Mp -= Manacost;
+            CasterUnitComponent
+                .MPBar
+                .UpdateBar(
+                    CasterUnitComponent.Mp, CasterUnitComponent.CalculateMaxMp()
+                );
+            //reset attack timer
+            CasterUnitComponent.AttackTimer = 0;
+            CasterUnitComponent.NextAttackTimerMin = Manacost;
         }
     }
 
     virtual public void OnPointerClick(PointerEventData e) {
         //cast spell
-        Debug.Log("Casting...");
         Cast();
     }
 

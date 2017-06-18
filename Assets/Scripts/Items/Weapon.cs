@@ -5,7 +5,6 @@ using System;
 public class Weapon : Equipment {
     public int DiceCount;
     public int DiceMaxRoll;
-    public float SwingTime;
 
     public string GetDmgRangeString() {
         return (this.DiceCount + "d" + this.DiceMaxRoll);
