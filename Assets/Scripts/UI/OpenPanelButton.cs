@@ -3,9 +3,9 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 
-public class OpenStatPanelButton : MonoBehaviour, IPointerClickHandler{
+public class OpenPanelButton : MonoBehaviour, IPointerClickHandler{
 	
-	public StatPanel Panel;
+	public ContainerPanel Panel;
     public GameObject[] MakeUnclickable; 
 	public bool IsPanelVisible = false;
 
