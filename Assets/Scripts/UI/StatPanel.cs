@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class StatPanel : MonoBehaviour {
+public class StatPanel : ContainerPanel {
 
 	public Player Player;
 
@@ -17,10 +17,6 @@ public class StatPanel : MonoBehaviour {
 	public Text DexterityLabel;
 	public Text DamageLabel;
 	public Text AcLabel;
-
-	public void MakeVisible(bool visible){
-        this.gameObject.SetActive(visible);
-    }
 
 	void Start () {
 		MakeVisible(false);

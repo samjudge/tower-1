@@ -222,4 +222,14 @@ public abstract class Unit : MonoBehaviour {
         }
         return false;
     }
+
+    private void OnTriggerEnter(Collider Other) {
+        SpellProjectile s = Other.gameObject.GetComponent<SpellProjectile>() as SpellProjectile;
+        if (s != null) {
+            if (this.gameObject != s.Caster) { //if the spell hits someone who isn't it's caster... 
+                Debug.Log("Spell Hit!");
+                s.SpellEffectOn(this.gameObject);
+            }
+        }
+    }
 }
