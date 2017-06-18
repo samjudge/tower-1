@@ -9,6 +9,7 @@ public class Player : Unit {
 	public ActionLog ActionLog;
 	public Flasher RedFlasher;
 	public UIFillBar HPBar;
+    public UIFillBar MPBar;
     public UIFillBar AttackCDBar;
     public GameOverScreen GameOverScreen;
 
@@ -27,12 +28,14 @@ public class Player : Unit {
                 new Equipped("Feet", Nothing),
             }
         );
+        this.NextAttackTimerMin = (this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).Weight+1;
         StartCoroutine(CameraFollow());
 	}
 
     public float AttackTimer = 0f;
+    public float NextAttackTimerMin = 0f;
 
-	void Update () {
+    void Update () {
         //check state
         AttackTimer += Time.deltaTime;
         if (IsDead()){
@@ -58,7 +61,7 @@ public class Player : Unit {
 		if(Input.GetKeyDown(KeyCode.E)){
 			this.RotateBy(90);
 		}
-        AttackCDBar.UpdateBar(this.AttackTimer,(this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).SwingTime);
+        AttackCDBar.UpdateBar(this.AttackTimer, NextAttackTimerMin);
 
     }
 
@@ -97,13 +100,13 @@ public class Player : Unit {
 	}
 
     override public void Attack(Unit u){
-        
-        Animator a = u.GetComponentInChildren<Animator>() as Animator;
-        a.Play("TakeDamage");
-        int roll = (Equipment.Get("Left").GetComponent<Weapon>() as Weapon).RollDice();
-        this.ActionLog.WriteNewLine("you smack the enemy for " + roll +"!");
-        u.TakeDamage(roll);
-        this.InputLocked = false;
+        if (AttackTimer >= NextAttackTimerMin) {
+            AttackTimer = 0;
+            int roll = (Equipment.Get("Left").GetComponent<Weapon>() as Weapon).RollDice();
+            this.ActionLog.WriteNewLine("you smack the enemy for " + roll + "!");
+            u.TakeDamage(roll);
+            this.NextAttackTimerMin = (this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).Weight+1;
+        }
     }
 
 
