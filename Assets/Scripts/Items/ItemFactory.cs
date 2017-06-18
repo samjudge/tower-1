@@ -10,6 +10,9 @@ public class ItemFactory : MonoBehaviour
     public Weapon Fangs;
     public Weapon Sword;
 
+    //Consumables
+    public Consumable HPPotion;
+
     //Items
     public Item TestKey;
     public Item Level1BrassKey;
