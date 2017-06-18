@@ -11,6 +11,9 @@ public class PickupFactory : MonoBehaviour {
     //Weapons
     public Pickup Sword;
 
+    //Consumables
+    public Pickup HPPotion;
+
     //Items
     public Pickup Key;
 
