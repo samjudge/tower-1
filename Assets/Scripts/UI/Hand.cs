@@ -4,7 +4,6 @@ using System.Collections;
 
 public class Hand : MonoBehaviour
 {
-
     private GameObject HeldThing;
 
     public void SetHeld(GameObject t) {
@@ -18,6 +17,13 @@ public class Hand : MonoBehaviour
 
     public bool IsHoldingThing() {
         if (HeldThing != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public bool IsHoldingThing(GameObject o) {
+        if (HeldThing == o) {
             return true;
         }
         return false;

@@ -8,7 +8,6 @@ public class Pickup : MonoBehaviour {
     public ItemFactory ItemFactory;
     public Hand Hand;
 
-
 	// Update is called once per frame
 	void Update () {
         this.transform.rotation = Quaternion.Euler(
@@ -24,12 +23,17 @@ public class Pickup : MonoBehaviour {
             //pick up item and place in inventory
             if (!Hand.IsHoldingThing()) {
                 p.ActionLog.WriteNewLine("you pick up the " + Name + ".");
-                Item i = ItemFactory.MakeItem(Name);
+                Item i = this.CreateItem();
                 this.Hand.SetHeld(i.gameObject);
                 MonoBehaviour.Destroy(this.gameObject);
             } else {
                 p.ActionLog.WriteNewLine("Your hand is full!");
             }
         }
+    }
+
+    virtual protected Item CreateItem() {
+        Item i = ItemFactory.MakeItem(Name);
+        return i;
     }
 }

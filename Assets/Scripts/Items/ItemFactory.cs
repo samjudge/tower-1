@@ -17,6 +17,9 @@ public class ItemFactory : MonoBehaviour
     public Item TestKey;
     public Item Level1BrassKey;
 
+    //Special Items!
+    public Item Map;
+
     public Item MakeItem(string name) {
         FieldInfo Property = this.GetType().GetField(name);
         Item ItemPrefab = Property.GetValue(this) as Item;
