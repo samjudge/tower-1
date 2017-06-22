@@ -16,6 +16,7 @@ public class PickupFactory : MonoBehaviour {
 
     //Items
     public Pickup Key;
+    public Pickup Map;
 
     public Pickup MakePickup(string name) {
         FieldInfo Property = this.GetType().GetField(name);

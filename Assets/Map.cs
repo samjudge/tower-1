@@ -10,14 +10,19 @@ public class Map : MonoBehaviour {
     public MapFactory MapFactory;
     public int OffsetZ;
     private ArrayList MappedRefs;
+    public Transform UITarget;
 
     void Start() {
         MappedRefs = new ArrayList();
+        PlayerTile = MapFactory.MakeMapTile("PlayerTile");
+        PlayerTile.transform.SetParent(UITarget.transform);
         StartCoroutine(UpdateMap());
     }
     
     void Update() {
     }
+
+    private GameObject PlayerTile;
 
     public IEnumerator UpdateMap () {
         while (true) {
@@ -32,6 +37,12 @@ public class Map : MonoBehaviour {
                     } 
                 }
             }
+            //update player position
+            PlayerTile.GetComponent<Image>().rectTransform.localPosition = new Vector3(
+                Player.transform.position.x * 5,
+                (Player.transform.position.z + OffsetZ) * 5,
+                0
+            );
             yield return null;
         }
 	}
@@ -42,20 +53,16 @@ public class Map : MonoBehaviour {
         if (Wall != null) {
             for (int x = 0; x < Child.childCount; x++) {
                 Transform Subchild = Child.GetChild(x);
-                Debug.Log(Subchild);
                 LayerMask Mask = LayerMask.GetMask("Walls");
                 RaycastHit hit = new RaycastHit();
                 Physics.Linecast(Subchild.position, Player.transform.position, out hit, Mask);
-                
                 if (hit.transform != null) {
                     //something blocking view
                     //Debug.DrawLine(Player.transform.position, Subchild.position, Color.red, 5f);
                     //Debug.Log(hit.transform);
                 } else {
-                    Debug.DrawLine(Player.transform.position, Subchild.position, Color.red, 2f);
-                    Debug.Log(hit.transform);
                     GameObject i = MapFactory.MakeMapTile("WallTile");
-                    i.transform.SetParent(this.transform);
+                    i.transform.SetParent(UITarget.transform);
                     i.GetComponent<Image>().rectTransform.localPosition = new Vector3(
                         GameObject.transform.position.x * 5,
                         (GameObject.transform.position.z + OffsetZ) * 5,
