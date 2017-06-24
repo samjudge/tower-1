@@ -5,21 +5,28 @@ using UnityEngine;
 public class WallSwitch : MonoBehaviour {
 
     public Player Player;
-    public Door[] OpensDoors;
+    public GameObject[] Interactions;
     public bool IsSwitchedOn = false;
     public bool OneWay = false;
 
     void OnMouseDown() {
         if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1.2) {
-            foreach (Openable O in OpensDoors) {
-                if (!IsSwitchedOn) {
-                    if (O.CanOpen()) {
-                        O.Open();
+            foreach (GameObject G in Interactions) {
+                Openable O = G.GetComponent<Openable>() as Openable;
+                if (O != null) {
+                    if (!IsSwitchedOn) {
+                        if (O.CanOpen()) {
+                            O.Open();
+                        }
+                    } else if (OneWay == false) {
+                        if (O.CanClose()) {
+                            O.Close();
+                        }
                     }
-                } else if(OneWay == false) {
-                    if (O.CanClose()) {
-                        O.Close();
-                    }
+                }
+                Destroyable D = G.GetComponent<Destroyable>() as Destroyable;
+                if (D != null) {
+                    D.Destroy();
                 }
             }
             if (!IsSwitchedOn) {
@@ -27,6 +34,9 @@ public class WallSwitch : MonoBehaviour {
             } else if (OneWay == false) {
                 IsSwitchedOn = false;
             }
+
         }
+
     }
+                
 }
