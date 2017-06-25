@@ -12,7 +12,7 @@ public class Bat : Unit {
     private bool DeadFlag = false;
 
     void Start() {
-        this.Equipment = new EquipmentSlots(new Equipped[] { new Equipped("Left", Fangs) });
+        this.Equipment = new EquipmentSlots(new Equipped[] { new Equipped("Left", Fangs) },this);
     }
 
     void Update() {
@@ -91,6 +91,7 @@ public class Bat : Unit {
         }
         Animator a = this.GetComponentInChildren<Animator>() as Animator;
         a.Play("BatAttack");
+        Debug.Log(this.Equipment.Get("Left").Owner);
         u.TakeDamage((Equipment.Get("Left").GetComponent<Weapon>() as Weapon).RollDice());
         this.InputLocked = false;
     }

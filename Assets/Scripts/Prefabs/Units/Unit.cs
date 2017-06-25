@@ -7,8 +7,11 @@ using System.Collections.Generic;
 public class Equipped {
     public Equipped(String SlotName, Equipment DefaultItem) {
         this.SlotName = SlotName;
-        this.DefaultItem = DefaultItem;
+        if (DefaultItem != null) {
+            this.DefaultItem = MonoBehaviour.Instantiate(DefaultItem);
+        }
     }
+
     public Equipment DefaultItem;
     public String SlotName;
     public Equipment Item;
@@ -17,8 +20,11 @@ public class Equipped {
 [Serializable]
 public class EquipmentSlots {
     public Equipped[] Equipment;
-    public EquipmentSlots(Equipped[] Slots) {
+    public Unit Owner;
+
+    public EquipmentSlots(Equipped[] Slots, Unit Owner) {
         Equipment = new Equipped[Slots.Length];
+        this.Owner = Owner;
         for (int x = 0; x < Equipment.Length; x++) {
             Equipment[x] = Slots[x];
         }
@@ -28,7 +34,13 @@ public class EquipmentSlots {
         foreach (Equipped e in Equipment) {
             if (e.SlotName == s) {
                 if (e.Item == null) {
+                    if (e.DefaultItem.Owner == null) {
+                        e.DefaultItem.Owner = this.Owner;
+                    }
                     return e.DefaultItem;
+                }
+                if (e.Item.Owner == null) {
+                    e.DefaultItem.Owner = this.Owner;
                 }
                 return e.Item;
             }
@@ -40,6 +52,7 @@ public class EquipmentSlots {
         for (int x = 0; x < Equipment.Length; x++) {
             Equipped e = Equipment[x];
             if (e.SlotName == s) {
+                i.Owner = e.DefaultItem.Owner;
                 e.Item = i;
             }
         }
@@ -149,8 +162,7 @@ public abstract class Unit : MonoBehaviour {
  	 * A coroutine that causes the object to Lerp-translate to the vector stored in target,
  	 * using delta time * 2 as it's t value.
  	 */
-    protected IEnumerator Move()
-    {
+    protected IEnumerator Move(){
         Vector3 origin = this.transform.position;
         float distance = (origin - target).sqrMagnitude;
         float t = 0;

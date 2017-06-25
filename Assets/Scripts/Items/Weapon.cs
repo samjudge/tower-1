@@ -10,7 +10,7 @@ public class Weapon : Equipment {
         return (this.DiceCount + "d" + this.DiceMaxRoll);
     }
 
-    public int RollDice() {
+    virtual public int RollDice() {
         System.Random r = new System.Random();
         int score = 0;
         for(int x = 0; x < DiceCount; x++) {

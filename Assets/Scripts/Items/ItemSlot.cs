@@ -39,10 +39,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler {
             GameObject was = this.GetItemAndDetatch();
             Consumable wasAsCosumable = was.GetComponent<Consumable>() as Consumable;
             if (wasAsCosumable != null) {
-                Debug.Log(this.Owner);
-                Debug.Log(this.Owner.Hp);
                 wasAsCosumable.ConsumeEffectOn(this.Owner);
-                Debug.Log(this.Owner.Hp);
             } else {
                 //put it back, since it isn't a consumable
                 this.SetItemAndMakeChild(was);

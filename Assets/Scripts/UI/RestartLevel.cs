@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class RestartLevel : MonoBehaviour {
 	public void Reload(){
-		Application.LoadLevel(0);
-	}
+        SceneManager.LoadScene("1", LoadSceneMode.Single);
+    }
 }

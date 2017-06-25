@@ -26,11 +26,18 @@ public class Player : Unit {
                 new Equipped("Head", Nothing),
                 new Equipped("Body", Nothing),
                 new Equipped("Feet", Nothing),
-            }
+            },
+            this
         );
         this.NextAttackTimerMin = (this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).Weight+1;
+        ResetCamera();
+    }
+
+    public void ResetCamera() {
+        this.StopAllCoroutines();
+        InputLocked = false;
         StartCoroutine(CameraFollow());
-	}
+    }
 
     public float AttackTimer = 0f;
     public float NextAttackTimerMin = 0f;
