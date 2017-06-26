@@ -8,9 +8,11 @@ public class StairsTo : MonoBehaviour {
     public Map Map;
 
     void OnTriggerEnter(Collider o) {
-        Player.StopAllCoroutines();
-        Player.transform.position = NewPosition;
-        Player.ResetCamera();
-        Map.ResetMap();
+        if (o.gameObject.GetComponent<Player>() != null) {
+            Player.StopAllCoroutines();
+            Player.transform.position = NewPosition;
+            Player.ResetCamera();
+            Map.ResetMap();
+        }
     }
 }

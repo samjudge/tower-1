@@ -5,6 +5,7 @@ public interface Openable {
     bool IsLocked();
 
     void ToggleLock();
+    void ToggleOpen();
 
     bool CanOpen();
     bool CanClose();

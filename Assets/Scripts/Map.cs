@@ -89,6 +89,8 @@ public class Map : MonoBehaviour {
             Destroy(m.gameObject);
         }
         UITarget.transform.DetachChildren();
+        PlayerTile = MapFactory.MakeMapTile("PlayerTile");
+        PlayerTile.transform.SetParent(UITarget.transform);
         StartCoroutine(UpdateMap());
     }
 }

@@ -38,8 +38,15 @@ public class Door : Blocker, Openable {
     public void Close() {
         if (IsOpened) {
             IsOpened = !IsOpened;
-            Debug.Log(this.transform.position.y - 1);
-            StartCoroutine(Slide(this.transform.position.y+1));
+            StartCoroutine(Slide(this.transform.position.y + 1));
+        }
+    }
+
+    public void ToggleOpen() {
+        if (!IsOpened) {
+            Open();
+        } else {
+            Close();
         }
     }
 

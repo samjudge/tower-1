@@ -50,22 +50,22 @@ public class Player : Unit {
 			return;
 		}
 		//inputs
-		if(Input.GetKeyDown(KeyCode.W)){
+		if(Input.GetKey(KeyCode.W)){
 			this.ShiftPosition(1,0);
 		}
-		if(Input.GetKeyDown(KeyCode.A)){
+		if(Input.GetKey(KeyCode.A)){
 			this.ShiftPosition(0,-1);
 		}
-		if(Input.GetKeyDown(KeyCode.S)){
+		if(Input.GetKey(KeyCode.S)){
 			this.ShiftPosition(-1,0);
 		}
-		if(Input.GetKeyDown(KeyCode.D)){
+		if(Input.GetKey(KeyCode.D)){
 			this.ShiftPosition(0,1);
 		}
-		if(Input.GetKeyDown(KeyCode.Q)){
+		if(Input.GetKey(KeyCode.Q)){
 			this.RotateBy(-90);
 		}
-		if(Input.GetKeyDown(KeyCode.E)){
+		if(Input.GetKey(KeyCode.E)){
 			this.RotateBy(90);
 		}
         AttackCDBar.UpdateBar(this.AttackTimer, NextAttackTimerMin);

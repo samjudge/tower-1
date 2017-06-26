@@ -2,41 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WallSwitch : MonoBehaviour {
+public class WallSwitch : Switch {
 
-    public Player Player;
-    public GameObject[] Interactions;
-    public bool IsSwitchedOn = false;
-    public bool OneWay = false;
+    public override void SwitchOff() {
+        this.transform.rotation = Quaternion.Euler(new Vector3(-270f, this.transform.rotation.y, this.transform.rotation.z));
+    }
+
+    public override void SwitchOn() {
+        this.transform.rotation = Quaternion.Euler(new Vector3(-90f, this.transform.rotation.y, this.transform.rotation.z));
+    }
 
     void OnMouseDown() {
         if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1.2) {
-            foreach (GameObject G in Interactions) {
-                Openable O = G.GetComponent<Openable>() as Openable;
-                if (O != null) {
-                    if (!IsSwitchedOn) {
-                        if (O.CanOpen()) {
-                            O.Open();
-                        }
-                    } else if (OneWay == false) {
-                        if (O.CanClose()) {
-                            O.Close();
-                        }
-                    }
-                }
-                Destroyable D = G.GetComponent<Destroyable>() as Destroyable;
-                if (D != null) {
-                    D.Destroy();
-                }
-            }
-            if (!IsSwitchedOn) {
-                IsSwitchedOn = true;
-            } else if (OneWay == false) {
-                IsSwitchedOn = false;
-            }
-
+            PerformInteractions();
         }
-
     }
                 
 }

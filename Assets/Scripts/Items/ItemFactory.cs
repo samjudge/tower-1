@@ -16,6 +16,7 @@ public class ItemFactory : MonoBehaviour
     //Items
     public Item TestKey;
     public Item Level1BrassKey;
+    public Item Level2BrassKey1;
 
     //Special Items!
     public Item Map;
