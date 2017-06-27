@@ -37,26 +37,28 @@ public class Skeleton : Unit {
         if(!InputLocked && TickActionsCurrentTimer > TickActionsEvery) {
             TickActionsCurrentTimer = 0f;
             this.InputLocked = true;
-            AStarPathfindAroundWalls Pathfinder = new AStarPathfindAroundWalls(Player.transform.position, new Vector3(1f, 1f, 1f));
-            AStarPathfind.Node InitalPosition = new AStarPathfind.Node();
-            InitalPosition.position = this.transform.position;
-            AStarPathfind.Node Target = Pathfinder.FindPath(InitalPosition);
-            while (Target.parent.parent != null){
-                Target = Target.parent;
+            if ((Player.transform.position - this.transform.position).sqrMagnitude < 12f) {
+                AStarPathfindAroundWalls Pathfinder = new AStarPathfindAroundWalls(Player.transform.position, new Vector3(1f, 1f, 1f));
+                AStarPathfind.Node InitalPosition = new AStarPathfind.Node();
+                InitalPosition.position = this.transform.position;
+                AStarPathfind.Node Target = Pathfinder.FindPath(InitalPosition);
+                while (Target.parent.parent != null) {
+                    Target = Target.parent;
+                }
+                this.target = Target.position;
             }
-            this.target = Target.position;
-            LayerMask Mask = LayerMask.GetMask("Player");
+            LayerMask Mask = LayerMask.GetMask("Player", "Floor", "Walls");
             RaycastHit hit = new RaycastHit();
             Physics.Linecast(
                 this.transform.position,
                 this.target,
                 out hit,
                 Mask
-                );
-            if (hit.transform != null){
+            );
+            Player p = hit.transform.gameObject.GetComponent<Player>() as Player;
+            if (p != null){
                 this.Attack(Player);
-            }
-            else {
+            } else {
                 this.StartCoroutine(this.Move());
             }
         }

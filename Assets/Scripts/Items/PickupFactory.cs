@@ -10,9 +10,11 @@ public class PickupFactory : MonoBehaviour {
 
     //Weapons
     public Pickup Sword;
+    public Pickup Mace;
 
     //Consumables
     public Pickup HPPotion;
+    public Pickup MPPotion;
 
     //Items
     public Pickup Key;

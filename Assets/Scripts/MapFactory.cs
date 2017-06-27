@@ -8,6 +8,7 @@ public class MapFactory : MonoBehaviour {
     //Tiles
     public GameObject WallTile;
     public GameObject PlayerTile;
+    public GameObject FloorTile;
 
     public GameObject MakeMapTile(string name) {
         FieldInfo Property = this.GetType().GetField(name);

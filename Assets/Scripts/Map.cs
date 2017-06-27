@@ -49,6 +49,7 @@ public class Map : MonoBehaviour {
                 (Player.transform.position.z + OffsetZ) * 5,
                 0
             );
+            PlayerTile.transform.SetAsLastSibling();
             yield return null;
         }
 	}
@@ -76,6 +77,25 @@ public class Map : MonoBehaviour {
                 }
             }
         }
+        Floor Floor = GameObject.GetComponent<Floor>();
+        if (Floor != null) {
+            Debug.Log("Floor");
+            LayerMask Mask = LayerMask.GetMask("Walls");
+            RaycastHit hit = new RaycastHit();
+            Physics.Linecast(Floor.transform.position, Player.transform.position, out hit, Mask);
+            if (hit.transform != null) {
+                //something blocking view
+            } else {
+                GameObject i = MapFactory.MakeMapTile("FloorTile");
+                i.transform.SetParent(UITarget.transform);
+                i.GetComponent<Image>().rectTransform.localPosition = new Vector3(
+                    GameObject.transform.position.x * 5,
+                    (GameObject.transform.position.z + OffsetZ) * 5,
+                    0
+                );
+                MappedRefs.Add(Child);
+            }
+        }
     }
 
     public void ResetMap() {
@@ -91,6 +111,7 @@ public class Map : MonoBehaviour {
         UITarget.transform.DetachChildren();
         PlayerTile = MapFactory.MakeMapTile("PlayerTile");
         PlayerTile.transform.SetParent(UITarget.transform);
+        PlayerTile.transform.SetAsLastSibling();
         StartCoroutine(UpdateMap());
     }
 }

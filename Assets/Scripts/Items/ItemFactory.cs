@@ -9,9 +9,11 @@ public class ItemFactory : MonoBehaviour
     public Weapon Fist;
     public Weapon Fangs;
     public Weapon Sword;
+    public Weapon Mace;
 
     //Consumables
     public Consumable HPPotion;
+    public Consumable MPPotion;
 
     //Items
     public Item TestKey;
