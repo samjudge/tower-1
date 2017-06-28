@@ -109,7 +109,7 @@ public abstract class Unit : MonoBehaviour {
         this.target = (this.transform.position + translateTo);
         //shove enemies
         GameObject i = this.GetUnitInfo(target);
-        this.StartCoroutine(Move());
+        this.StartCoroutine(Move(2f));
     }
 
     protected bool InputLocked = false;
@@ -138,8 +138,7 @@ public abstract class Unit : MonoBehaviour {
         float range = Quaternion.Angle(this.transform.rotation, Quaternion.Euler(targetRotation));
         float t = 0;
         while (range > 1) {
-            if (this.CancelMovementFlag == true)
-            {
+            if (this.CancelMovementFlag == true) {
                 break;
             }
             range = Quaternion.Angle(this.transform.rotation, Quaternion.Euler(targetRotation));
@@ -151,8 +150,7 @@ public abstract class Unit : MonoBehaviour {
             this.CancelMovementFlag = false;
             this.transform.rotation = origin;
         }
-        else
-        {
+        else {
             this.transform.rotation = Quaternion.Euler(targetRotation);
         }
         InputLocked = false;
@@ -162,7 +160,7 @@ public abstract class Unit : MonoBehaviour {
  	 * A coroutine that causes the object to Lerp-translate to the vector stored in target,
  	 * using delta time * 2 as it's t value.
  	 */
-    protected IEnumerator Move(){
+    protected IEnumerator Move(float TravelSpeed){
         Vector3 origin = this.transform.position;
         float distance = (origin - target).sqrMagnitude;
         float t = 0;
@@ -172,27 +170,27 @@ public abstract class Unit : MonoBehaviour {
             if (o != null) {
                 this.CancelMovementFlag = true;
             }
-            if (this.CancelMovementFlag == true)
-            {
+            if (this.CancelMovementFlag == true){
                 break;
             }
             distance =
                 (this.transform.position - target).sqrMagnitude;
             t += Time.deltaTime;
             this.transform.position =
-                Vector3.Lerp(origin, target, t * 2);
+                Vector3.Lerp(origin, target, t * TravelSpeed);
             yield return null;
         }
-        if (this.CancelMovementFlag == true)
-        {
+        if (this.CancelMovementFlag == true) {
             this.CancelMovementFlag = false;
-            this.transform.position = origin;
+            //
+            this.target = origin;
+            //this.transform.position = origin;
+            StartCoroutine(Move(8f));
         }
-        else
-        {
+        else {
             this.transform.position = target;
+            InputLocked = false;
         }
-        InputLocked = false;
     }
 
     private GameObject GetUnitInfo(Vector3 to) {

@@ -5,11 +5,11 @@ using UnityEngine;
 public class WallSwitch : Switch {
 
     public override void SwitchOff() {
-        this.transform.rotation = Quaternion.Euler(new Vector3(-270f, this.transform.rotation.y, this.transform.rotation.z));
+        //this.transform.Rotate(new Vector3(180f, 0, 0));
     }
 
     public override void SwitchOn() {
-        this.transform.rotation = Quaternion.Euler(new Vector3(-90f, this.transform.rotation.y, this.transform.rotation.z));
+        //this.transform.Rotate(new Vector3(180f, 0, 0));
     }
 
     void OnMouseDown() {

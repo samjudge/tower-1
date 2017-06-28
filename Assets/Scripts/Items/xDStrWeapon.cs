@@ -9,7 +9,6 @@ public class xDStrWeapon : Weapon {
         int score = 0;
         for(int x = 0; x < DiceCount; x++) {
             int roll = r.Next(((int)Owner.Strength));
-            Debug.Log(Owner.Strength);
             score += (roll + 1);
         }
         return score;

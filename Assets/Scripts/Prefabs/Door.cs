@@ -29,14 +29,14 @@ public class Door : Blocker, Openable {
     }
 
     public void Open() {
-        if (!IsOpened) {
+        if (!IsOpened && CanOpen()) {
             IsOpened = !IsOpened;
             StartCoroutine(Slide(this.transform.position.y - 1));
         }
     }
 
     public void Close() {
-        if (IsOpened) {
+        if (IsOpened && CanClose()) {
             IsOpened = !IsOpened;
             StartCoroutine(Slide(this.transform.position.y + 1));
         }

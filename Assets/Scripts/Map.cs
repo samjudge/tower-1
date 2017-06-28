@@ -79,7 +79,6 @@ public class Map : MonoBehaviour {
         }
         Floor Floor = GameObject.GetComponent<Floor>();
         if (Floor != null) {
-            Debug.Log("Floor");
             LayerMask Mask = LayerMask.GetMask("Walls");
             RaycastHit hit = new RaycastHit();
             Physics.Linecast(Floor.transform.position, Player.transform.position, out hit, Mask);

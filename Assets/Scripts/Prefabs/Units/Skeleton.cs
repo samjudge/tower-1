@@ -34,10 +34,11 @@ public class Skeleton : Unit {
             return;
         }
         this.TickActionsCurrentTimer += Time.deltaTime;
-        if(!InputLocked && TickActionsCurrentTimer > TickActionsEvery) {
+        if (!InputLocked && TickActionsCurrentTimer > TickActionsEvery) {
             TickActionsCurrentTimer = 0f;
-            this.InputLocked = true;
-            if ((Player.transform.position - this.transform.position).sqrMagnitude < 12f) {
+            //if close by, then pathfind
+            if ((this.transform.position - Player.transform.position).sqrMagnitude < 32f) {
+                this.InputLocked = true;
                 AStarPathfindAroundWalls Pathfinder = new AStarPathfindAroundWalls(Player.transform.position, new Vector3(1f, 1f, 1f));
                 AStarPathfind.Node InitalPosition = new AStarPathfind.Node();
                 InitalPosition.position = this.transform.position;
@@ -46,20 +47,22 @@ public class Skeleton : Unit {
                     Target = Target.parent;
                 }
                 this.target = Target.position;
-            }
-            LayerMask Mask = LayerMask.GetMask("Player", "Floor", "Walls");
-            RaycastHit hit = new RaycastHit();
-            Physics.Linecast(
-                this.transform.position,
-                this.target,
-                out hit,
-                Mask
-            );
-            Player p = hit.transform.gameObject.GetComponent<Player>() as Player;
-            if (p != null){
-                this.Attack(Player);
-            } else {
-                this.StartCoroutine(this.Move());
+                LayerMask Mask = LayerMask.GetMask("Player", "Floor", "Walls");
+                RaycastHit hit = new RaycastHit();
+                Physics.Linecast(
+                    this.transform.position,
+                    this.target,
+                    out hit,
+                    Mask
+                    );
+                if (hit.transform != null) {
+                    Player p = hit.transform.gameObject.GetComponent<Player>() as Player;
+                    if (p != null) {
+                        this.Attack(Player);
+                    }
+                } else {
+                    this.StartCoroutine(this.Move(3f));
+                }
             }
         }
     }
@@ -88,7 +91,6 @@ public class Skeleton : Unit {
         if (DeadFlag) {
             return;
         }
-        Debug.Log(this.Equipment.Get("Left").Owner);
         Animator a = this.GetComponentInChildren<Animator>() as Animator;
         a.Play("BatAttack");
         Weapon w = this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon;
