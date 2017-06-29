@@ -4,8 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 [Serializable]
-public class Equipped {
-    public Equipped(String SlotName, Equipment DefaultItem) {
+public class EquippedEntity {
+
+    public EquippedEntity(String SlotName, Equipment DefaultItem) {
         this.SlotName = SlotName;
         if (DefaultItem != null) {
             this.DefaultItem = MonoBehaviour.Instantiate(DefaultItem);
@@ -18,12 +19,12 @@ public class Equipped {
 }
 
 [Serializable]
-public class EquipmentSlots {
-    public Equipped[] Equipment;
+public class EquipmentModel {
+    public EquippedEntity[] Equipment;
     public Unit Owner;
 
-    public EquipmentSlots(Equipped[] Slots, Unit Owner) {
-        Equipment = new Equipped[Slots.Length];
+    public EquipmentModel(EquippedEntity[] Slots, Unit Owner) {
+        Equipment = new EquippedEntity[Slots.Length];
         this.Owner = Owner;
         for (int x = 0; x < Equipment.Length; x++) {
             Equipment[x] = Slots[x];
@@ -31,16 +32,16 @@ public class EquipmentSlots {
     }
 
     public Equipment Get(String s) {
-        foreach (Equipped e in Equipment) {
+        foreach (EquippedEntity e in Equipment) {
             if (e.SlotName == s) {
                 if (e.Item == null) {
-                    if (e.DefaultItem.Owner == null) {
-                        e.DefaultItem.Owner = this.Owner;
+                    if (e.DefaultItem.GetOwner() == null) {
+                        e.DefaultItem.SetOwner(Owner);
                     }
                     return e.DefaultItem;
                 }
-                if (e.Item.Owner == null) {
-                    e.DefaultItem.Owner = this.Owner;
+                if (e.Item.GetOwner() == null) {
+                    e.DefaultItem.SetOwner(this.Owner);
                 }
                 return e.Item;
             }
@@ -50,9 +51,9 @@ public class EquipmentSlots {
 
     public void Set(string s, Equipment i) {
         for (int x = 0; x < Equipment.Length; x++) {
-            Equipped e = Equipment[x];
+            EquippedEntity e = Equipment[x];
             if (e.SlotName == s) {
-                i.Owner = e.DefaultItem.Owner;
+                i.SetOwner(e.DefaultItem.GetOwner());
                 e.Item = i;
             }
         }
@@ -60,7 +61,7 @@ public class EquipmentSlots {
 
     public void SetToDefaultItem(string s) {
         for (int x = 0; x < Equipment.Length; x++) {
-            Equipped e = Equipment[x];
+            EquippedEntity e = Equipment[x];
             if (e.SlotName == s) {
                 e.Item = e.DefaultItem;
             }
@@ -88,7 +89,7 @@ public abstract class Unit : MonoBehaviour {
 
     protected Vector3 target;
 
-    public EquipmentSlots Equipment;
+    public EquipmentModel Equipment;
 
     private bool CancelMovementFlag = false;
 
@@ -108,7 +109,7 @@ public abstract class Unit : MonoBehaviour {
         translateTo = (this.transform.rotation * translateTo);
         this.target = (this.transform.position + translateTo);
         //shove enemies
-        GameObject i = this.GetUnitInfo(target);
+        GameObject i = this.SearchForUnitsRaycast(target);
         this.StartCoroutine(Move(2f));
     }
 
@@ -166,7 +167,7 @@ public abstract class Unit : MonoBehaviour {
         float t = 0;
         while (distance > Vector3.kEpsilon)
         {
-            GameObject o = GetUnitInfo(target);
+            GameObject o = SearchForUnitsRaycast(target);
             if (o != null) {
                 this.CancelMovementFlag = true;
             }
@@ -192,8 +193,12 @@ public abstract class Unit : MonoBehaviour {
             InputLocked = false;
         }
     }
-
-    private GameObject GetUnitInfo(Vector3 to) {
+    /**
+     * GameObject SearchForUnitsRaycast(Vector3 to)
+     * @param to the vector to cast from the unit's position to
+     * @return GameObject the first unit the raycast detects
+     */
+    private GameObject SearchForUnitsRaycast(Vector3 to) {
         LayerMask Mask = LayerMask.GetMask("Player","Enemies");
         RaycastHit hit = new RaycastHit();
         Physics.Linecast(

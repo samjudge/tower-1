@@ -4,12 +4,31 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour {
 
-    public string Name;
     public ItemFactory ItemFactory;
-    public Hand Hand;
 
-	// Update is called once per frame
-	void Update () {
+    [SerializeField]
+    private string Name;
+    [SerializeField]
+    private Hand Hand;
+
+    public Hand GetHand() {
+        return this.Hand;
+    }
+
+    public void SetHand(Hand Hand) {
+        this.Hand = Hand;
+    }
+
+    public string GetName() {
+        return this.Name;
+    }
+
+    public void SetName(string Name) {
+        this.Name = Name;
+    }
+
+    // Update is called once per frame
+    void Update () {
         this.transform.rotation = Quaternion.Euler(
             this.transform.rotation.eulerAngles.x,
             this.transform.rotation.eulerAngles.y + Time.deltaTime*30,
@@ -22,12 +41,12 @@ public class Pickup : MonoBehaviour {
         if (p != null) {
             //pick up item and place in inventory
             if (!Hand.IsHoldingThing()) {
-                p.ActionLog.WriteNewLine("you pick up the " + Name + ".");
+                p.GetActionLog().WriteNewLine("you pick up the " + Name + ".");
                 Item i = this.CreateItem();
                 this.Hand.SetHeld(i.gameObject);
                 MonoBehaviour.Destroy(this.gameObject);
             } else {
-                p.ActionLog.WriteNewLine("Your hand is full!");
+                p.GetActionLog().WriteNewLine("Your hand is full!");
             }
         }
     }

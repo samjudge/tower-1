@@ -12,7 +12,7 @@ public class Bat : Unit {
     private bool DeadFlag = false;
 
     void Start() {
-        this.Equipment = new EquipmentSlots(new Equipped[] { new Equipped("Left", Fangs) },this);
+        this.Equipment = new EquipmentModel(new EquippedEntity[] { new EquippedEntity("Left", Fangs) },this);
     }
 
     void Update() {

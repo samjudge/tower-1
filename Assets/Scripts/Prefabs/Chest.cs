@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour {
 
-    public string Contains;
     public PickupFactory PickupFactory;
-    public Player Player;
-    bool isOpended = false;
+
+    [SerializeField]
+    private string Contains;
+    [SerializeField]
+    private Player Player;
+    [SerializeField]
+    private bool isOpended = false;
 
     void OnMouseDown(){
         if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1.2){
@@ -16,14 +20,6 @@ public class Chest : MonoBehaviour {
                 StartCoroutine(Open());
             }
         }
-    }
-
-    private IEnumerator Open() {
-        Player.ActionLog.WriteNewLine("you open the chest.");
-        Pickup p = this.PickupFactory.MakePickup(Contains);
-        p.transform.position = this.transform.position;
-        MonoBehaviour.Destroy(this.gameObject); //destroy this chest
-        yield return null;
     }
 
     void OnTriggerEnter(Collider other) {
@@ -35,4 +31,13 @@ public class Chest : MonoBehaviour {
             p.SetCancelMovementFlag(true);
         }
     }
+
+    private IEnumerator Open() {
+        Player.GetActionLog().WriteNewLine("you open the chest.");
+        Pickup p = this.PickupFactory.MakePickup(Contains);
+        p.transform.position = this.transform.position;
+        MonoBehaviour.Destroy(this.gameObject); //destroy this chest
+        yield return null;
+    }
+
 }

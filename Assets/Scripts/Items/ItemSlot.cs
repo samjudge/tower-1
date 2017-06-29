@@ -54,7 +54,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler {
      * @return GameObject - the currently occupying item GameObject
      */
     public GameObject GetItem() {
-        return this.Item.GetComponent<GameObject>() as GameObject;
+        return this.Item;
     }
 
     /**
@@ -69,19 +69,25 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler {
             DetatchItems();
             Consumable wasAsCosumable = was.GetComponent<Consumable>() as Consumable;
             if (wasAsCosumable != null) {
+                //consume+destory
                 wasAsCosumable.ConsumeEffectOn(Owner);
+                Destroy(was);
             } else {
                 SetItem(was);
                 AttachItem(was);
             }
         } else if (e.button == PointerEventData.InputButton.Left) {
-            GameObject held = Hand.GetHeld();
-            GameObject held = Hand.DetatchChildItems();
-            GameObject was = GetItem();
-            DetatchItems();
-            GetHand().SetHeld(was);
-            SetItem(held);
-            AttachItem(held);
+            SwapItemWithHeld();
         }
+    }
+
+    private void SwapItemWithHeld() {
+        GameObject held = this.GetHand().GetHeld();
+        this.GetHand().DetatchItems();
+        GameObject was = this.GetItem();
+        this.DetatchItems();
+        this.GetHand().SetHeld(was);
+        this.SetItem(held);
+        this.AttachItem(held);
     }
 }

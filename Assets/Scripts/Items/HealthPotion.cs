@@ -19,7 +19,7 @@ public class HealthPotion : Consumable{
         }
         if (u.GetType() == typeof(Player)) {
             Player p = u as Player;
-            p.HPBar.UpdateBar(p.Hp,p.CalculateMaxHp());
+            p.GetHPBar().UpdateBar(p.Hp,p.CalculateMaxHp());
         }
     }
 }

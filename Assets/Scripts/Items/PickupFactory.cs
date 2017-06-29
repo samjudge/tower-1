@@ -24,9 +24,9 @@ public class PickupFactory : MonoBehaviour {
         FieldInfo Property = this.GetType().GetField(name);
         Pickup PickupPrefab = Property.GetValue(this) as Pickup;
         Pickup nPickup = Instantiate(PickupPrefab, new Vector3(0, 0, 0), Quaternion.Euler(15, 180, 0)) as Pickup;
-        nPickup.Name = name;
+        nPickup.SetName(name);
         nPickup.ItemFactory = ItemFactory;
-        nPickup.Hand = Hand;
+        nPickup.SetHand(Hand);
         return nPickup;
     }
 }

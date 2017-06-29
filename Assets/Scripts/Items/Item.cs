@@ -8,4 +8,12 @@ public class Item : MonoBehaviour {
     private string Name;
     [SerializeField]
     private int Weight;
+
+    public string GetName() {
+        return Name;
+    }
+
+    public int GetWeight() {
+        return Weight;
+    }
 }

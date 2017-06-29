@@ -11,7 +11,7 @@ public class Spark : SpellProjectile {
     private void Start() {
         Player p = GetCaster().GetComponent<Player>() as Player;
         if (p != null) {
-            p.ActionLog.WriteNewLine("sparks fly from your fingertips!");
+            p.GetActionLog().WriteNewLine("sparks fly from your fingertips!");
         }
     }
 
@@ -43,7 +43,7 @@ public class Spark : SpellProjectile {
             int roll = RollDice();
             if (UnitCaster.GetType() == typeof(Player)) {
                 (UnitCaster as Player)
-                    .ActionLog
+                    .GetActionLog()
                     .WriteNewLine(
                         "zapp! the sparks deal " + roll + " damage!"
                      );

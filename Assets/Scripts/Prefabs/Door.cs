@@ -5,10 +5,14 @@ using UnityEngine;
 
 public class Door : Blocker, Openable {
 
-    public Player Player;
-    public Hand Hand;
-    public string NeedsKeyOfName = "";
-    public bool IsOpened = false;
+    [SerializeField]
+    private Player Player;
+    [SerializeField]
+    private Hand Hand;
+    [SerializeField]
+    private string NeedsKeyOfName = "";
+
+    private bool IsOpened = false;
     private bool Locked = true;
     private bool InMotion = false;
 
@@ -57,13 +61,13 @@ public class Door : Blocker, Openable {
                 GameObject Held = this.Hand.GetHeld();
                 if (Held != null) {
                     Item Item = this.Hand.GetHeld().GetComponent<Item>() as Item;
-                    if (Item.Name != NeedsKeyOfName) {
-                        Player.ActionLog.WriteNewLine("the key doesn't seem to fit.");
+                    if (Item.GetName() != NeedsKeyOfName) {
+                        Player.GetActionLog().WriteNewLine("the key doesn't seem to fit.");
                     } else {
                         ToggleLock();
                     }
                 } else {
-                    Player.ActionLog.WriteNewLine("the door is locked tight.");
+                    Player.GetActionLog().WriteNewLine("the door is locked tight.");
                     return;
                 }
             } else {
@@ -80,7 +84,7 @@ public class Door : Blocker, Openable {
 
     private IEnumerator Slide(float YDestination) {
         this.InMotion = true;
-        Player.ActionLog.WriteNewLine("the door creeks open...");
+        Player.GetActionLog().WriteNewLine("the door creeks open...");
         Vector3 target = new Vector3(
             this.transform.position.x,
             YDestination,

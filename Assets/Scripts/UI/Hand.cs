@@ -38,7 +38,7 @@ public class Hand : MonoBehaviour{
     /** DetatchChildItems()
      *  Remove all children from this object's transform
      */
-    public void DetatchChildItems() {
+    public void DetatchItems() {
         this.transform.DetachChildren();
     }
 

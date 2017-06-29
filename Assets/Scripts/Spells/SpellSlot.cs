@@ -7,19 +7,19 @@ using UnityEngine.EventSystems;
 public class SpellSlot : MonoBehaviour, IPointerClickHandler {
 
     [SerializeField]
-    public GameObject Spell;
+    private Spell Spell;
     [SerializeField]
-    public GameObject Caster;
+    private Unit Caster;
 
-    public GameObject GetSpell() {
+    public Spell GetSpell() {
         return Spell;
     }
 
-    private void SetSpell(GameObject o) {
+    private void SetSpell(Spell o) {
         this.Spell = o;
     }
 
-    private void AttachSpell(GameObject o) {
+    private void AttachSpell(Spell o) {
         if (o != null) {
             o.transform.SetParent(this.transform);
             (o.GetComponent<Image>() as Image).rectTransform.localPosition = new Vector3(0, 0, 0);
@@ -34,8 +34,7 @@ public class SpellSlot : MonoBehaviour, IPointerClickHandler {
      */
     private void Cast() {
         if (Spell != null) {
-            GameObject Sp = (Spell.GetComponent<Spell>() as Spell).GetProjectile().gameObject;
-            int Manacost = (Spell.GetComponent<Spell>() as Spell).ManaCost;
+            int Manacost = Spell.ManaCost;
             Player CasterUnitComponent = Caster.GetComponent<Player>() as Player;
             /*
              * action on cooldown
@@ -47,31 +46,33 @@ public class SpellSlot : MonoBehaviour, IPointerClickHandler {
              * not enough man
              */
             if (CasterUnitComponent.Mp < Manacost) {
-                CasterUnitComponent.ActionLog.WriteNewLine("you are too drained to cast that spell!");
+                CasterUnitComponent.GetActionLog().WriteNewLine("you are too drained to cast that spell!");
                 return;
             }
             /*
-             * spawn projectile
+             * spawn spell and initalize it's projectile
              */
-            GameObject Casted = Instantiate(Sp , Caster.transform.position,
+            GameObject Casted = Instantiate(Spell.GetProjectile().gameObject,
+                Caster.transform.position,
                 Quaternion.Euler(
                     Caster.transform.rotation.eulerAngles.x - 90,
                     Caster.transform.rotation.eulerAngles.y,
                     Caster.transform.rotation.eulerAngles.z
                 )
             );
+            Debug.Log(Casted.GetComponent<SpellProjectile>() as SpellProjectile);
             (Casted.GetComponent<SpellProjectile>() as SpellProjectile).SetDirection(Quaternion.Euler(
                     Caster.transform.rotation.eulerAngles.x,
                     Caster.transform.rotation.eulerAngles.y - 90,
                     Caster.transform.rotation.eulerAngles.z
                 )
             );
-            (Casted.GetComponent<SpellProjectile>() as SpellProjectile).SetCaster(Caster);
+            (Casted.GetComponent<SpellProjectile>() as SpellProjectile).SetCaster(Caster.gameObject);
             /*
              * update caster mp
              */
             CasterUnitComponent.Mp -= Manacost;
-            CasterUnitComponent.MPBar.UpdateBar(
+            CasterUnitComponent.GetMPBar().UpdateBar(
                 CasterUnitComponent.Mp, CasterUnitComponent.CalculateMaxMp()
             );
             /*

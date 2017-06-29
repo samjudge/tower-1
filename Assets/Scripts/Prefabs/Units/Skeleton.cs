@@ -12,7 +12,7 @@ public class Skeleton : Unit {
     private bool DeadFlag = false;
 
     void Start() {
-        this.Equipment = new EquipmentSlots(new Equipped[] { new Equipped("Left", Fist) }, this);
+        this.Equipment = new EquipmentModel(new EquippedEntity[] { new EquippedEntity("Left", Fist) }, this);
     }
 
     void Update() {

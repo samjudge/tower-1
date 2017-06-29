@@ -3,14 +3,15 @@ using System.Collections;
 
 public class Blocker : MonoBehaviour {
 
-    public bool BlocksSpells = true;
+    [SerializeField]
+    private bool BlocksSpells = true;
 
 	void OnTriggerEnter(Collider other){
 		//check if player
 		Player p = other.gameObject.GetComponent<Player>() as Player;
 		if(p != null){
             //set flag to cancel movement and return
-            p.ActionLog.WriteNewLine("Oof!");
+            p.GetActionLog().WriteNewLine("Oof!");
 			p.SetCancelMovementFlag(true);
 		}
         SpellProjectile s = other.gameObject.GetComponent<SpellProjectile>() as SpellProjectile;

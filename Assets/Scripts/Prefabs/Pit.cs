@@ -8,6 +8,6 @@ public class Pit : Blocker, Destroyable {
 
     public void Destroy() {
         Destroy(this.gameObject);
-        p.ActionLog.WriteNewLine("you hear a mechanical click...");
+        p.GetActionLog().WriteNewLine("you hear a mechanical click...");
     }
 }

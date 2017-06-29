@@ -1,35 +1,60 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections;
-using System.Collections.Generic;
+using System;
 
 public class Player : Unit {
-    
-	public Camera PlayerCam;
-	public ActionLog ActionLog;
-	public Flasher RedFlasher;
-	public UIFillBar HPBar;
-    public UIFillBar MPBar;
-    public UIFillBar AttackCDBar;
-    public GameOverScreen GameOverScreen;
 
-    public Weapon Fist;
+    [SerializeField]
+    private Camera PlayerCam;
+    [SerializeField]
+    private ActionLog ActionLog;
+    [SerializeField]
+    private Flasher RedFlasher;
+    [SerializeField]
+    private UIFillBar HPBar;
+    [SerializeField]
+    private UIFillBar MPBar;
+    [SerializeField]
+    private UIFillBar AttackCDBar;
+    [SerializeField]
+    private GameOverScreen GameOverScreen;
+    [SerializeField]
+    private Weapon Fist;
+    [SerializeField]
     public Equipment Nothing;
+
+
+    public UIFillBar GetMPBar() {
+        return MPBar;
+    }
+
+    public UIFillBar GetHPBar() {
+        return HPBar;
+    }
+
+    public UIFillBar GetAttackCDBar() {
+        return AttackCDBar;
+    }
+
+    public ActionLog GetActionLog() {
+        return this.ActionLog;
+    }
+
 
     void Start () {
 		this.Hp = CalculateMaxHp();
 		this.Mp = CalculateMaxMp();
-        this.Equipment = new EquipmentSlots(
-            new Equipped[] {
-                new Equipped("Left", Fist),
-                new Equipped("Right", Fist),
-                new Equipped("Head", Nothing),
-                new Equipped("Body", Nothing),
-                new Equipped("Feet", Nothing),
+        this.Equipment = new EquipmentModel(
+            new EquippedEntity[] {
+                new EquippedEntity("Left", Fist),
+                new EquippedEntity("Right", Fist),
+                new EquippedEntity("Head", Nothing),
+                new EquippedEntity("Body", Nothing),
+                new EquippedEntity("Feet", Nothing),
             },
             this
         );
-        this.NextAttackTimerMin = (this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).Weight+1;
+        this.NextAttackTimerMin = (this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).GetWeight()+1;
         ResetCamera();
     }
 
@@ -112,7 +137,7 @@ public class Player : Unit {
             int roll = (Equipment.Get("Left").GetComponent<Weapon>() as Weapon).RollDice();
             this.ActionLog.WriteNewLine("you smack the enemy for " + roll + "!");
             u.TakeDamage(roll);
-            this.NextAttackTimerMin = (this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).Weight+1;
+            this.NextAttackTimerMin = (this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).GetWeight()+1;
         }
     }
 

@@ -44,4 +44,14 @@ public class Weapon : Equipment {
     public override Unit GetOwner() {
         return Owner;
     }
+
+    //@Override
+    public override void SetEquippableTo(string[] s) {
+        EquippableTo = s;
+    }
+
+    //@Override
+    public override void SetOwner(Unit o) {
+        Owner = o;
+    }
 }

@@ -3,12 +3,13 @@ using System.Collections;
 
 public class MagicMapPickup : Pickup {
 
-    public MapContainer MapContainer;
+    [SerializeField]
+    private MapContainer MapContainer;
 
     override protected Item CreateItem() {
-        MagicMap i = this.ItemFactory.MakeItem(Name) as MagicMap;
-        i.Hand = this.Hand;
-        i.Map = this.MapContainer;
+        MagicMap i = this.ItemFactory.MakeItem(this.GetName()) as MagicMap;
+        i.SetHand(this.GetHand());
+        i.SetMapContainer(this.MapContainer);
         return i;
     }
 }

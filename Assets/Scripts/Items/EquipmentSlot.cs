@@ -11,7 +11,7 @@ public class EquipmentSlot : ItemSlot {
 
     private void SwapItemWithHeld() {
         GameObject held = this.GetHand().GetHeld();
-        this.GetHand().DetatchChildItems();
+        this.GetHand().DetatchItems();
         if (CanEquip(held)) {
             GameObject was = this.GetItem();
             this.DetatchItems();
