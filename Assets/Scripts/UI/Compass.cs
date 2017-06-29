@@ -5,7 +5,8 @@ using System;
 
 public class Compass : MonoBehaviour {
 
-	public Player Player;
+    [SerializeField]
+	private Player Player;
 
 	void Update () {
 		Text Text = this.GetComponent<Text>();

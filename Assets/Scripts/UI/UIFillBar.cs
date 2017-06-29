@@ -3,18 +3,28 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class UIFillBar : MonoBehaviour {
-	
-	private Image Bar;
-	public Image EffectBar;
-    public bool ChangeColorIfFilled = false;
-    public Color FilledColor;
-    public Color UnfilledColor;
 
+	[SerializeField]
+	private Image Bar;
+    [SerializeField]
+    private Image EffectBar;
+    [SerializeField]
+    private bool ChangeColorIfFilled = false;
+    [SerializeField]
+    private Color FilledColor;
+    [SerializeField]
+    private Color UnfilledColor;
+    
     void Start(){
 		this.Bar = this.GetComponent<Image>() as Image;
 	}
-	
-	public void UpdateBar(float val, float maxVal){
+    /**
+     * UpdateBar(float val, float maxVal)
+     * @param float val - the numerator of the bar
+     * @param float maxVal - the denominmator of the bar
+     * Update the bar to show as a percentage (0.0 - 1.0) of the provided values
+     */
+    public void UpdateBar(float val, float maxVal){
 		this.Bar.fillAmount = val/maxVal;
         if (ChangeColorIfFilled) {
             if (this.Bar.fillAmount == 1) {

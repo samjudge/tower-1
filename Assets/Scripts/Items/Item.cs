@@ -4,6 +4,8 @@ using System;
 
 [Serializable]
 public class Item : MonoBehaviour {
-    public string Name;
-    public int Weight;
+    [SerializeField]
+    private string Name;
+    [SerializeField]
+    private int Weight;
 }

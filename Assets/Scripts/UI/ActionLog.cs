@@ -5,18 +5,21 @@ using System;
 
 public class ActionLog : MonoBehaviour {
 
-	public Scrollbar Scrollbar;
-	public GameObject TextObject;
+    [SerializeField]
+	private Scrollbar Scrollbar;
+    [SerializeField]
+    private GameObject TextObject;
+    [SerializeField]
+    private Text Text;
+    [SerializeField]
+    private bool HasTextBeenModified = false;
 
-	private Text Text;
-	private bool HasTextBeenModified = false;
-
-	public void Start(){
+	void Start(){
 		this.Text = TextObject.GetComponent<Text>() as Text;
 		StartCoroutine(TrackNewLogEntries());
 	}
 
-	public void Update(){}
+	void Update(){}
 
 	private IEnumerator TrackNewLogEntries(){
 		while(true){
@@ -31,7 +34,12 @@ public class ActionLog : MonoBehaviour {
 		}
 	}
 
-	public void WriteNewLine(String NewLine){
+    /**
+     * WriteNewLine()
+     * @param String NewLine 
+     * Write a line to the action log
+     */
+    public void WriteNewLine(String NewLine){
 		this.Text.text = NewLine + "\n" + this.Text.text;
 		this.HasTextBeenModified = true;
 	}

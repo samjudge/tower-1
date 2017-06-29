@@ -6,51 +6,53 @@ using UnityEngine.EventSystems;
 
 public class SpellSlot : MonoBehaviour, IPointerClickHandler {
 
+    [SerializeField]
     public GameObject Spell;
+    [SerializeField]
     public GameObject Caster;
 
-    public void Start() {
-        
+    public GameObject GetSpell() {
+        return Spell;
     }
 
-    public void SetSpellAndMakeChild(GameObject o) {
-        this.SetSpell(o);
+    private void SetSpell(GameObject o) {
+        this.Spell = o;
+    }
+
+    private void AttachSpell(GameObject o) {
         if (o != null) {
             o.transform.SetParent(this.transform);
             (o.GetComponent<Image>() as Image).rectTransform.localPosition = new Vector3(0, 0, 0);
         }
     }
 
-    public GameObject GetSpellAndDetatch() {
+    private void DetatchAllSpells() {
         this.transform.DetachChildren();
-        GameObject t = this.Spell;
-        this.Spell = null;
-        return t;
     }
-
-    public void SetSpell(GameObject o) {
-        this.Spell = o;
-    }
-
-    public Spell GetSpell() {
-        return this.Spell.GetComponent<Spell>() as Spell;
-    }
-
-    public void Cast() {
+    /**
+     * Cast the spell in this slot, in the direction the caster GameObject is facing
+     */
+    private void Cast() {
         if (Spell != null) {
-            GameObject Sp = (Spell.GetComponent<Spell>() as Spell).Projectile;
+            GameObject Sp = (Spell.GetComponent<Spell>() as Spell).GetProjectile().gameObject;
             int Manacost = (Spell.GetComponent<Spell>() as Spell).ManaCost;
             Player CasterUnitComponent = Caster.GetComponent<Player>() as Player;
-            //action on cooldown
+            /*
+             * action on cooldown
+             */
             if (CasterUnitComponent.AttackTimer < CasterUnitComponent.NextAttackTimerMin) {
                 return;
             }
-            //not enough mana
+            /*
+             * not enough man
+             */
             if (CasterUnitComponent.Mp < Manacost) {
                 CasterUnitComponent.ActionLog.WriteNewLine("you are too drained to cast that spell!");
                 return;
             }
-            //create spell projectile
+            /*
+             * spawn projectile
+             */
             GameObject Casted = Instantiate(Sp , Caster.transform.position,
                 Quaternion.Euler(
                     Caster.transform.rotation.eulerAngles.x - 90,
@@ -58,27 +60,29 @@ public class SpellSlot : MonoBehaviour, IPointerClickHandler {
                     Caster.transform.rotation.eulerAngles.z
                 )
             );
-            (Casted.GetComponent<SpellProjectile>() as SpellProjectile).CastDirection = Quaternion.Euler(
+            (Casted.GetComponent<SpellProjectile>() as SpellProjectile).SetDirection(Quaternion.Euler(
                     Caster.transform.rotation.eulerAngles.x,
                     Caster.transform.rotation.eulerAngles.y - 90,
                     Caster.transform.rotation.eulerAngles.z
-                );
-            (Casted.GetComponent<SpellProjectile>() as SpellProjectile).Caster = Caster;
-            //update player mp
+                )
+            );
+            (Casted.GetComponent<SpellProjectile>() as SpellProjectile).SetCaster(Caster);
+            /*
+             * update caster mp
+             */
             CasterUnitComponent.Mp -= Manacost;
-            CasterUnitComponent
-                .MPBar
-                .UpdateBar(
-                    CasterUnitComponent.Mp, CasterUnitComponent.CalculateMaxMp()
-                );
-            //reset attack timer
+            CasterUnitComponent.MPBar.UpdateBar(
+                CasterUnitComponent.Mp, CasterUnitComponent.CalculateMaxMp()
+            );
+            /*
+             * reset caster timer
+             */
             CasterUnitComponent.AttackTimer = 0;
             CasterUnitComponent.NextAttackTimerMin = Manacost;
         }
     }
 
     virtual public void OnPointerClick(PointerEventData e) {
-        //cast spell
         Cast();
     }
 

@@ -3,20 +3,30 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class StatPanel : ContainerPanel {
-
-	public Player Player;
-
-	public Text NameLabel;
-	public Text HpLabel;
-	public Text MpLabel;
-	public Text LevelLabel;
-	public Text ExpLabel;
-	public Text StrengthLabel;
-	public Text IntelligenceLabel;
-	public Text LuckLabel;
-	public Text DexterityLabel;
-	public Text DamageLabel;
-	public Text AcLabel;
+    [SerializeField]
+	private Player Player;
+    [SerializeField]
+    private Text NameLabel;
+    [SerializeField]
+    private Text HpLabel;
+    [SerializeField]
+    private Text MpLabel;
+    [SerializeField]
+    private Text LevelLabel;
+    [SerializeField]
+    private Text ExpLabel;
+    [SerializeField]
+    private Text StrengthLabel;
+    [SerializeField]
+    private Text IntelligenceLabel;
+    [SerializeField]
+    private Text LuckLabel;
+    [SerializeField]
+    private Text DexterityLabel;
+    [SerializeField]
+    private Text DamageLabel;
+    [SerializeField]
+    private Text AcLabel;
 
 	void Start () {
 		MakeVisible(false);

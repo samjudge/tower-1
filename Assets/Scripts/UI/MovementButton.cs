@@ -5,13 +5,21 @@ using System.Collections;
 
 public class MovementButton : MonoBehaviour, IPointerClickHandler{
 
-	public Player Player;
-	public float xMotion;
-	public float yMotion;
-	public float rotation;
+    [SerializeField]
+	private Player Player;
+    [SerializeField]
+    private float xMotion;
+    [SerializeField]
+    private float yMotion;
+    [SerializeField]
+    private float rotation;
 
-
-	public void OnPointerClick(PointerEventData e){
+    /**
+     * OnPointerClick(PointerEventData e)
+     * @param PointerEventData e - 
+     * Move in the direction/rotation specified in the object's fields
+     */
+    public void OnPointerClick(PointerEventData e){
 		if(this.xMotion != 0 || this.yMotion != 0){
 			Player.ShiftPosition(this.xMotion, this.yMotion);
 		} else if (this.rotation != 0){

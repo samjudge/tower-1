@@ -4,14 +4,18 @@ using System.Collections;
 
 public class Flasher : MonoBehaviour {
 
-	public void Flash(){
+    /**
+     * Flash()
+     * Make the screen flash
+     */
+    public void Flash(){
 		Image Image = this.GetComponent<Image>() as Image;
 		Color ScreenColor = Image.color;
 		ScreenColor.a = 0;
 		StartCoroutine(Fade());
 	}
 
-	public IEnumerator Fade(){
+	private IEnumerator Fade(){
 		float value = 0.7f;
 		Image Image = this.GetComponent<Image>() as Image;
 		Color ScreenColor = Image.color;

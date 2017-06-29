@@ -6,49 +6,82 @@ using UnityEngine.EventSystems;
 
 public class ItemSlot : MonoBehaviour, IPointerClickHandler {
 
-    protected GameObject Item;
-    public Unit Owner;
-    public Hand Hand;
+    [SerializeField]
+    private GameObject Item;
 
-    public void SetItemAndMakeChild(GameObject o) {
-        this.SetItem(o);
+    [SerializeField]
+    private Unit Owner;
+
+    [SerializeField]
+    private Hand Hand;
+
+    /* GetHand()
+     * Get the hand (mouse pointer) associated with this slot
+     */
+    public Hand GetHand() {
+        return Hand;
+    }
+
+    /**
+     * MakeChild(GameObject o)
+     * @param GameObject o - make O a child of this GameObject's transform
+     */
+    protected void AttachItem(GameObject o) {
         if (o != null) {
             o.transform.SetParent(this.transform);
             (o.GetComponent<Image>() as Image).rectTransform.localPosition = new Vector3(0, 0, 0);
         }
     }
-    
-    public GameObject GetItemAndDetatch() {
+
+    /**
+     * DetatchItem()
+     * Detatch all items from this GameObject's transform
+     */
+    public void DetatchItems() {
         this.transform.DetachChildren();
-        GameObject t = this.Item;
-        this.Item = null;
-        return t;
     }
 
-    public void SetItem(GameObject o) {
+    /**
+     * SetItem(GameObject o)
+     * @param GameObject o - set the current item
+     */
+    protected void SetItem(GameObject o) {
         this.Item = o;
     }
 
-    public Item GetItem() {
-        return this.Item.GetComponent<Item>() as Item;
+    /**
+     * GetItem()
+     * @return GameObject - the currently occupying item GameObject
+     */
+    public GameObject GetItem() {
+        return this.Item.GetComponent<GameObject>() as GameObject;
     }
 
+    /**
+     * OnPointerClick(PointerEventData e)
+     * @param PointerEventData e - event data
+     * Swap the item with whatever is in the associated Hand GameObject on left click
+     * Attempt to use the item on a right click
+     */
     virtual public void OnPointerClick(PointerEventData e){
         if (e.button == PointerEventData.InputButton.Right) {
-            //consume item in slot (if consumable)
-            GameObject was = this.GetItemAndDetatch();
+            GameObject was = GetItem();
+            DetatchItems();
             Consumable wasAsCosumable = was.GetComponent<Consumable>() as Consumable;
             if (wasAsCosumable != null) {
-                wasAsCosumable.ConsumeEffectOn(this.Owner);
+                wasAsCosumable.ConsumeEffectOn(Owner);
             } else {
-                //put it back, since it isn't a consumable
-                this.SetItemAndMakeChild(was);
+                SetItem(was);
+                AttachItem(was);
             }
         } else if (e.button == PointerEventData.InputButton.Left) {
-            GameObject held = this.Hand.GetHeldAndRemoveAsChild();
-            GameObject was = this.GetItemAndDetatch();
-            this.Hand.SetHeld(was);
-            this.SetItemAndMakeChild(held);
+            GameObject held = Hand.GetHeld();
+            GameObject held = Hand.DetatchChildItems();
+            GameObject was = GetItem();
+            DetatchItems();
+            GetHand().SetHeld(was);
+            SetItem(held);
+            AttachItem(held);
         }
     }
 }

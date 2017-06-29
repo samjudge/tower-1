@@ -1,13 +1,13 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Collections;
 
 public class OpenPanelButton : MonoBehaviour, IPointerClickHandler{
-	
-	public ContainerPanel Panel;
-    public GameObject[] MakeUnclickable; 
-	public bool IsPanelVisible = false;
+	[SerializeField]
+	private ContainerPanel Panel;
+    [SerializeField]
+    private GameObject[] MakeUnclickable;
+    [SerializeField]
+    private bool IsPanelVisible = false;
 
 	public void OnPointerClick(PointerEventData e){
 		IsPanelVisible = !IsPanelVisible;

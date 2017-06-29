@@ -2,6 +2,13 @@
 using System.Collections;
 
 public class Spell : MonoBehaviour {
-    public GameObject Projectile;
+
+    [SerializeField]
+    private SpellProjectile SpellProjectile;
+    [SerializeField]
     public int ManaCost;
+    
+    public SpellProjectile GetProjectile() {
+        return SpellProjectile;
+    }
 }
