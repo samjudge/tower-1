@@ -3,10 +3,14 @@ using System.Collections;
 
 public abstract class Switch : MonoBehaviour, Togglable {
 
+    [SerializeField]
     public Player Player;
-    public GameObject[] Interactions;
-    public bool IsSwitchedOn = false;
-    public bool OneWay = false;
+    [SerializeField]
+    private GameObject[] Interactions;
+    [SerializeField]
+    private bool IsSwitchedOn = false;
+    [SerializeField]
+    private bool OneWay = false;
 
     abstract public void SwitchOn();
     abstract public void SwitchOff();
@@ -19,6 +23,9 @@ public abstract class Switch : MonoBehaviour, Togglable {
             SwitchOn();
         }
     }
+
+    [SerializeField]
+    private bool IsButton = false;
 
     public void PerformInteractions() {
         foreach (GameObject G in Interactions) {
@@ -39,6 +46,8 @@ public abstract class Switch : MonoBehaviour, Togglable {
             Togglable T = G.GetComponent<Togglable>() as Togglable;
             if (T != null) {
                 if (!IsSwitchedOn) {
+                    T.Toggle();
+                } else if (IsButton == true) {
                     T.Toggle();
                 }
             }
