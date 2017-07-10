@@ -41,10 +41,9 @@ public class StatPanel : ContainerPanel {
 		this.SetDexterityLabel(Player.Dexterity.ToString());
 		this.SetIntelligenceLabel(Player.Intelligence.ToString());
 		this.SetLuckLabel(Player.Luck.ToString());
-		this.SetLevelLabel("1");
-		this.SetExpLabel("0");
+		this.SetLevelLabel(Player.CalculateLevel().ToString());
+		this.SetExpLabel(Player.GetExperience().ToString());
 		this.SetArmourLabel("0");
-        Debug.Log(Player.Equipment.Get("Left"));
 		this.SetDamageLabel(
             (Player.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).GetDmgRangeString()
         );

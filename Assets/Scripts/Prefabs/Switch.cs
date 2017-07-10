@@ -29,6 +29,9 @@ public abstract class Switch : MonoBehaviour, Togglable {
 
     public void PerformInteractions() {
         foreach (GameObject G in Interactions) {
+            if (G == null) {
+                continue;
+            }
             Openable O = G.GetComponent<Openable>() as Openable;
             if (O != null) {
                 if (!IsSwitchedOn) {

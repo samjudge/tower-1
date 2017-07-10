@@ -11,6 +11,8 @@ public class Player : Unit {
     [SerializeField]
     private Flasher RedFlasher;
     [SerializeField]
+    private UIFillBar EXPBar;
+    [SerializeField]
     private UIFillBar HPBar;
     [SerializeField]
     private UIFillBar MPBar;
@@ -23,6 +25,12 @@ public class Player : Unit {
     [SerializeField]
     public Equipment Nothing;
 
+    [SerializeField]
+    private float Experience;
+
+    public float GetExperience() {
+        return this.Experience;
+    }
 
     public UIFillBar GetMPBar() {
         return MPBar;
@@ -40,6 +48,56 @@ public class Player : Unit {
         return this.ActionLog;
     }
 
+    private int[] ExpNeeds = { 0, 30, 65, 100, 180, 295, 420, 600, 700, 830, 1000, 1500, 2000, 3000, 5000, 10000 };
+
+    [SerializeField]
+    private int SpentPoints = 0;
+
+    public int CalculateLevel() {
+        for (int x = ExpNeeds.Length-1; x >= 0; x--) {
+            if (this.Experience >= ExpNeeds[x]) {
+                return x+1;
+            }
+        }
+        return 1;
+    }
+
+    public int GetEXPNeededForNextLevel() {
+        return ExpNeeds[CalculateLevel()];
+    }
+
+    public int CalculateMaxFreeStatPoints() {
+        return (this.CalculateLevel() * 2 + 1);
+    }
+
+    public bool HasFreePoints() {
+        if (SpentPoints < CalculateMaxFreeStatPoints()) {
+            return true;
+        }
+        return false;
+    }
+
+    public void SpendPointOn(string Stat) {
+        if (HasFreePoints()) {
+            switch (Stat) {
+                case "Str":
+                    this.Strength++;
+                    this.Hp += 5;
+                    break;
+                case "Luk":
+                    this.Luck++;
+                    break;
+                case "Int":
+                    this.Intelligence++;
+                    this.Mp += 3;
+                    break;
+                case "Dex":
+                    this.Dexterity++;
+                    break;
+            }
+            this.SpentPoints++;
+        }
+    }
 
     void Start () {
 		this.Hp = CalculateMaxHp();
@@ -54,7 +112,7 @@ public class Player : Unit {
             },
             this
         );
-        this.NextAttackTimerMin = (this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).GetWeight()+1;
+        this.NextAttackTimerMin = Math.Max(0.4f, ((this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).GetWeight() - (this.Strength / 3)));
         ResetCamera();
     }
 
@@ -94,7 +152,7 @@ public class Player : Unit {
 			this.RotateBy(90);
 		}
         AttackCDBar.UpdateBar(this.AttackTimer, NextAttackTimerMin);
-
+        EXPBar.UpdateBar(this.GetExperience() - ExpNeeds[this.CalculateLevel()-1], GetEXPNeededForNextLevel());
     }
 
 	/** 
@@ -136,10 +194,23 @@ public class Player : Unit {
             AttackTimer = 0;
             int roll = (Equipment.Get("Left").GetComponent<Weapon>() as Weapon).RollDice();
             this.ActionLog.WriteNewLine("you smack the enemy for " + roll + "!");
+            bool notDeadFlag = false;
+            if (!u.IsDead()) {
+                notDeadFlag = true;
+            }
             u.TakeDamage(roll);
-            this.NextAttackTimerMin = (this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).GetWeight()+1;
+            this.NextAttackTimerMin = Math.Max(0.4f,((this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon).GetWeight()-(this.Strength/3)));
+            //if this is the hit that killed the unit
+            if (notDeadFlag  && u.IsDead()) {
+                this.Experience += u.CalculateEXPBounty();
+                
+            }
         }
     }
 
+    public void IncrementExperience(float Exp) {
+        this.Experience += Exp;
+
+    }
 
 }

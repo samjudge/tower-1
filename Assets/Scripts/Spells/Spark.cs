@@ -48,7 +48,17 @@ public class Spark : SpellProjectile {
                         "zapp! the sparks deal " + roll + " damage!"
                      );
             }
+            bool notDeadFlag = false;
+            if (!UnitCaster.IsDead()) {
+                notDeadFlag = true;
+            }
             UnitTarget.TakeDamage(roll);
+            Player p = GetCaster().GetComponent<Player>() as Player;
+            if (p != null) {
+                if (notDeadFlag && UnitTarget.IsDead()) {
+                    p.IncrementExperience(UnitTarget.CalculateEXPBounty());
+                }
+            }
             MonoBehaviour.Destroy(this.gameObject); //destory this projectile
         }
     }

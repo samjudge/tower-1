@@ -70,22 +70,32 @@ public class EquipmentModel {
 }
 
 public abstract class Unit : MonoBehaviour {
+    [SerializeField]
     public float Hp = 0;
 
     public float CalculateMaxHp() {
         return this.Strength * 5;
     }
 
+    [SerializeField]
     public float Mp = 0;
 
     public float CalculateMaxMp() {
         return this.Intelligence * 3;
     }
 
+    [SerializeField]
     public float Strength;
+    [SerializeField]
     public float Luck;
+    [SerializeField]
     public float Intelligence;
+    [SerializeField]
     public float Dexterity;
+    
+    public float CalculateEXPBounty() {
+        return this.Strength*2 + this.Luck * 2 + this.Intelligence * 2 + this.Dexterity * 2;
+    }
 
     protected Vector3 target;
 
@@ -110,7 +120,7 @@ public abstract class Unit : MonoBehaviour {
         this.target = (this.transform.position + translateTo);
         //shove enemies
         GameObject i = this.SearchForUnitsRaycast(target);
-        this.StartCoroutine(Move(2f));
+        this.StartCoroutine(Move(0.95f + (this.Dexterity/4)));
     }
 
     protected bool InputLocked = false;
@@ -144,7 +154,7 @@ public abstract class Unit : MonoBehaviour {
             }
             range = Quaternion.Angle(this.transform.rotation, Quaternion.Euler(targetRotation));
             t += Time.deltaTime;
-            this.transform.rotation = Quaternion.Lerp(origin, Quaternion.Euler(targetRotation), t * 2);
+            this.transform.rotation = Quaternion.Lerp(origin, Quaternion.Euler(targetRotation), t * (0.95f + this.Dexterity / 6));
             yield return null;
         }
         if (this.CancelMovementFlag == true) {
@@ -186,7 +196,7 @@ public abstract class Unit : MonoBehaviour {
             //
             this.target = origin;
             //this.transform.position = origin;
-            StartCoroutine(Move(8f));
+            StartCoroutine(Move(1.95f + (this.Dexterity / 6)));
         }
         else {
             this.transform.position = target;
@@ -242,7 +252,6 @@ public abstract class Unit : MonoBehaviour {
         SpellProjectile s = Other.gameObject.GetComponent<SpellProjectile>() as SpellProjectile;
         if (s != null) {
             if (this.gameObject != s.GetCaster()) { //if the spell hits someone who isn't it's caster... 
-                Debug.Log("Spell Hit!");
                 s.SpellEffectOn(this.gameObject);
             }
         }

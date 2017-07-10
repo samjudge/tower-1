@@ -39,7 +39,9 @@ public class UIFillBar : MonoBehaviour {
 
 	private IEnumerator DoEffect(){
 		float currentFill = this.Bar.fillAmount;
-		float targetFill = this.EffectBar.fillAmount;
+        if (this.EffectBar != null) {
+            float targetFill = this.EffectBar.fillAmount;
+        }
 		while(EffectBar.fillAmount > this.Bar.fillAmount){
 			this.EffectBar.fillAmount -= Time.deltaTime/4;
 			yield return null;

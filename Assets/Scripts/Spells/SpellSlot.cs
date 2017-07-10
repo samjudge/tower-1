@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class SpellSlot : MonoBehaviour, IPointerClickHandler {
 
@@ -60,7 +61,6 @@ public class SpellSlot : MonoBehaviour, IPointerClickHandler {
                     Caster.transform.rotation.eulerAngles.z
                 )
             );
-            Debug.Log(Casted.GetComponent<SpellProjectile>() as SpellProjectile);
             (Casted.GetComponent<SpellProjectile>() as SpellProjectile).SetDirection(Quaternion.Euler(
                     Caster.transform.rotation.eulerAngles.x,
                     Caster.transform.rotation.eulerAngles.y - 90,
@@ -79,7 +79,7 @@ public class SpellSlot : MonoBehaviour, IPointerClickHandler {
              * reset caster timer
              */
             CasterUnitComponent.AttackTimer = 0;
-            CasterUnitComponent.NextAttackTimerMin = Manacost;
+            CasterUnitComponent.NextAttackTimerMin = Math.Max(0.33f,(Manacost*4)/CasterUnitComponent.Intelligence);
         }
     }
 
