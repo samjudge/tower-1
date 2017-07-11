@@ -42,12 +42,13 @@ public class UIFillBar : MonoBehaviour {
         if (this.EffectBar != null) {
             float targetFill = this.EffectBar.fillAmount;
         }
-		while(EffectBar.fillAmount > this.Bar.fillAmount){
-			this.EffectBar.fillAmount -= Time.deltaTime/4;
-			yield return null;
-		}
-		this.EffectBar.fillAmount = this.Bar.fillAmount;
-
+        if (this.EffectBar != null) {
+            while (EffectBar.fillAmount > this.Bar.fillAmount) {
+                this.EffectBar.fillAmount -= Time.deltaTime / 4;
+                yield return null;
+            }
+            this.EffectBar.fillAmount = this.Bar.fillAmount;
+        }
 	}
 	
 }

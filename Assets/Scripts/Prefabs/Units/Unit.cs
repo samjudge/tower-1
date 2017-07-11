@@ -69,7 +69,7 @@ public class EquipmentModel {
     }
 }
 
-public abstract class Unit : MonoBehaviour {
+public abstract class Unit : MonoBehaviour, Freezable {
     [SerializeField]
     public float Hp = 0;
 
@@ -255,5 +255,31 @@ public abstract class Unit : MonoBehaviour {
                 s.SpellEffectOn(this.gameObject);
             }
         }
+    }
+
+    private bool isFrozen = false;
+    private float UnfreezeAfter = 3f;
+    private float UnfreezeCurrentTimer = 0f;
+
+    private IEnumerator Unfreeze(){
+        while (UnfreezeCurrentTimer < UnfreezeAfter) {
+            UnfreezeCurrentTimer += Time.deltaTime;
+            yield return null;
+        }
+        UnfreezeCurrentTimer = 0f;
+        isFrozen = false;
+        this.GetComponentInChildren<MeshRenderer>().material.color = new Color(1f, 1f, 1f);
+        yield return null;
+    }
+
+    public void Freeze(float t) {
+        this.isFrozen = true;
+        this.UnfreezeAfter = t;
+        this.GetComponentInChildren<MeshRenderer>().material.color = new Color(0.7f, 0.8f, 1f);
+        this.StartCoroutine(Unfreeze());
+    }
+
+    public bool IsFrozen() {
+        return this.isFrozen;
     }
 }

@@ -27,10 +27,16 @@ public class Bomba : Unit{
         if (DeadFlag) {
             return;
         }
+
+        if (this.IsFrozen()) {
+            return;
+        }
+
         if (IsDead()) {
             BeginExplode();
             return;
         }
+
         this.TickActionsCurrentTimer += Time.deltaTime;
         if(!InputLocked && TickActionsCurrentTimer > TickActionsEvery) {
             TickActionsCurrentTimer = 0f;

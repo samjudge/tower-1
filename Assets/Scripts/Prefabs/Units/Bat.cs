@@ -33,6 +33,11 @@ public class Bat : Unit {
             a.Play("SwirlyDeath");
             return;
         }
+
+        if (this.IsFrozen()) {
+            return;
+        }
+
         this.TickActionsCurrentTimer += Time.deltaTime;
         if(!InputLocked && TickActionsCurrentTimer > TickActionsEvery) {
             TickActionsCurrentTimer = 0f;
