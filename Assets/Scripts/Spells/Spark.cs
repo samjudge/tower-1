@@ -41,16 +41,18 @@ public class Spark : SpellProjectile {
         if (UnitTarget != null) {
             Unit UnitCaster = GetCaster().GetComponent<Unit>() as Unit;
             int roll = RollDice();
-            if (UnitCaster.GetType() == typeof(Player)) {
-                (UnitCaster as Player)
-                    .GetActionLog()
-                    .WriteNewLine(
-                        "zapp! the sparks deal " + roll + " damage!"
-                     );
-            }
             bool notDeadFlag = false;
-            if (!UnitCaster.IsDead()) {
-                notDeadFlag = true;
+            if (UnitCaster != null) {
+                if (UnitCaster.GetType() == typeof(Player)) {
+                    (UnitCaster as Player)
+                        .GetActionLog()
+                        .WriteNewLine(
+                            "zapp! the sparks deal " + roll + " damage!"
+                         );
+                }
+                if (!UnitCaster.IsDead()) {
+                    notDeadFlag = true;
+                }
             }
             UnitTarget.TakeDamage(roll);
             Player p = GetCaster().GetComponent<Player>() as Player;
