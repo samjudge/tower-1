@@ -153,6 +153,8 @@ public class Player : Unit {
 		}
         AttackCDBar.UpdateBar(this.AttackTimer, NextAttackTimerMin);
         EXPBar.UpdateBar(this.GetExperience() - ExpNeeds[this.CalculateLevel()-1], GetEXPNeededForNextLevel());
+        this.GetComponentInChildren<Light>().intensity = 1f + (this.Luck / 10f);
+        this.GetComponentInChildren<Light>().range = 2.7f + (this.Luck / 8f);
     }
 
 	/** 
