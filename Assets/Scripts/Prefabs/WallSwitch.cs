@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class WallSwitch : Switch {
 
+    [SerializeField]
+    private Player Player;
+
     public override void SwitchOff() {
         //this.transform.Rotate(new Vector3(180f, 0, 0));
     }

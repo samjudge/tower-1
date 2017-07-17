@@ -17,7 +17,9 @@ public class PickupFactory : MonoBehaviour {
     public Pickup MPPotion;
 
     //Items
+    public Pickup Level1Key;
     public Pickup Level3Key;
+    public Pickup Level3Key2;
     public Pickup Map;
 
     public Pickup MakePickup(string name) {

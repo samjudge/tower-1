@@ -11,10 +11,18 @@ public class Door : Blocker, Openable {
     private Hand Hand;
     [SerializeField]
     private string NeedsKeyOfName = "";
+    [SerializeField]
+    private bool StartOpen = false;
 
     private bool IsOpened = false;
     private bool Locked = true;
     private bool InMotion = false;
+
+    private void Start() {
+        if (StartOpen) {
+            this.ToggleOpen();
+        }
+    }
 
     public bool IsLocked() {
         return Locked;
@@ -35,6 +43,7 @@ public class Door : Blocker, Openable {
     public void Open() {
         if (!IsOpened && CanOpen()) {
             IsOpened = !IsOpened;
+            Player.GetActionLog().WriteNewLine("the door creeks open...");
             StartCoroutine(Slide(this.transform.position.y - 1));
         }
     }
@@ -42,6 +51,7 @@ public class Door : Blocker, Openable {
     public void Close() {
         if (IsOpened && CanClose()) {
             IsOpened = !IsOpened;
+            Player.GetActionLog().WriteNewLine("the door closes.");
             StartCoroutine(Slide(this.transform.position.y + 1));
         }
     }
@@ -84,7 +94,6 @@ public class Door : Blocker, Openable {
 
     private IEnumerator Slide(float YDestination) {
         this.InMotion = true;
-        Player.GetActionLog().WriteNewLine("the door creeks open...");
         Vector3 target = new Vector3(
             this.transform.position.x,
             YDestination,

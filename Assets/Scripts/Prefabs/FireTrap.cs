@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireTrap : MonoBehaviour{
+public class FireTrap : MonoBehaviour, Togglable {
 
     [SerializeField]
     public Player Player;
@@ -18,12 +18,14 @@ public class FireTrap : MonoBehaviour{
     void Start() {}
 
     void Update() {
-        FireSpellCurrentTimer += Time.deltaTime;
-        if (FireSpellCurrentTimer < FireSpellEvery) {
-            return;
+        if (FireSpellEvery != 0f) {
+            FireSpellCurrentTimer += Time.deltaTime;
+            if (FireSpellCurrentTimer < FireSpellEvery) {
+                return;
+            }
+            FireSpellCurrentTimer = 0;
+            Fire();
         }
-        FireSpellCurrentTimer = 0;
-        Fire();
     }
 
     private void Fire() {
@@ -44,4 +46,7 @@ public class FireTrap : MonoBehaviour{
         (Casted.GetComponent<SpellProjectile>() as SpellProjectile).SetCaster(this.gameObject);
     }
 
+    public void Toggle() {
+        Fire();
+    }
 }

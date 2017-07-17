@@ -69,7 +69,7 @@ public class EquipmentModel {
     }
 }
 
-public abstract class Unit : MonoBehaviour, Freezable {
+public abstract class Unit : MonoBehaviour, Freezable, Enrageable {
     [SerializeField]
     public float Hp = 0;
 
@@ -275,11 +275,33 @@ public abstract class Unit : MonoBehaviour, Freezable {
     public void Freeze(float t) {
         this.isFrozen = true;
         this.UnfreezeAfter = t;
-        this.GetComponentInChildren<MeshRenderer>().material.color = new Color(0.7f, 0.8f, 1f);
+        this.GetComponentInChildren<MeshRenderer>().material.color = new Color(0f, 0.8f, 1f);
         this.StartCoroutine(Unfreeze());
     }
 
     public bool IsFrozen() {
         return this.isFrozen;
+    }
+
+    private bool isEnraged = false;
+    private float LoseEnragedAfter = 3.5f;
+    private float LoseEnragedCurrentTimer = 0f;
+
+    private IEnumerator RageCooldown() {
+        while (LoseEnragedCurrentTimer < LoseEnragedAfter) {
+            LoseEnragedCurrentTimer += Time.deltaTime;
+            yield return null;
+        }
+        LoseEnragedCurrentTimer = 0f;
+        isEnraged = false;
+        this.GetComponentInChildren<MeshRenderer>().material.color = new Color(1f, 1f, 1f);
+        yield return null;
+    }
+
+    public void Enrage(float t) {
+        this.isEnraged = true;
+        this.LoseEnragedAfter = t;
+        this.GetComponentInChildren<MeshRenderer>().material.color = new Color(1f, 0.7f, 0f);
+        this.StartCoroutine(Unfreeze());
     }
 }

@@ -40,6 +40,7 @@ public class ActionLog : MonoBehaviour {
      * Write a line to the action log
      */
     public void WriteNewLine(String NewLine){
+        Debug.Log(this.name);
 		this.Text.text = NewLine + "\n" + this.Text.text;
 		this.HasTextBeenModified = true;
 	}

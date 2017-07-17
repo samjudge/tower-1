@@ -4,18 +4,17 @@ using System.Collections;
 public abstract class Switch : MonoBehaviour, Togglable {
 
     [SerializeField]
-    public Player Player;
-    [SerializeField]
     private GameObject[] Interactions;
     [SerializeField]
     private bool IsSwitchedOn = false;
+    //If true, then interactions will -only- be performed once. Incompatable with IsButton.
     [SerializeField]
     private bool OneWay = false;
 
     abstract public void SwitchOn();
     abstract public void SwitchOff();
 
-    public void Toggle() {
+    virtual public void Toggle() {
         this.IsSwitchedOn = !this.IsSwitchedOn;
         if (IsSwitchedOn) {
             SwitchOff();
@@ -24,6 +23,7 @@ public abstract class Switch : MonoBehaviour, Togglable {
         }
     }
 
+    //If true, then interactions will be performed reguardless of if the button is on or off. Incompatable with OneWay.
     [SerializeField]
     private bool IsButton = false;
 
@@ -36,13 +36,15 @@ public abstract class Switch : MonoBehaviour, Togglable {
             if (O != null) {
                 if (!IsSwitchedOn) {
                     O.ToggleOpen();
-                } else if (OneWay == false){
+                } else if (IsButton == true) {
                     O.ToggleOpen();
                 }
             }
             Destroyable D = G.GetComponent<Destroyable>() as Destroyable;
             if (D != null) {
                 if (!IsSwitchedOn) {
+                    D.Destroy();
+                } else if (IsButton == true) {
                     D.Destroy();
                 }
             }
@@ -56,9 +58,11 @@ public abstract class Switch : MonoBehaviour, Togglable {
             }
         }
         if (!IsSwitchedOn) {
-            Toggle();
+            this.IsSwitchedOn = !this.IsSwitchedOn;
+            SwitchOn();
         } else if (OneWay == false) {
-            Toggle();
+            this.IsSwitchedOn = !this.IsSwitchedOn;
+            SwitchOff();
         }
     }
 
