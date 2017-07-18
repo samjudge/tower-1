@@ -38,11 +38,17 @@ public class Skeleton : Unit {
             return;
         }
 
+        float TickRequired = TickActionsEvery;
+
+        if (this.IsEnraged()) {
+            TickRequired = 0.33f;
+        }
+
         this.TickActionsCurrentTimer += Time.deltaTime;
-        if (!InputLocked && TickActionsCurrentTimer > TickActionsEvery) {
+        if (!InputLocked && TickActionsCurrentTimer > TickRequired) {
             TickActionsCurrentTimer = 0f;
             //if close by, then pathfind
-            if ((this.transform.position - Player.transform.position).sqrMagnitude < 32f) {
+            if ((this.transform.position - Player.transform.position).sqrMagnitude < 48f) {
                 this.InputLocked = true;
                 AStarPathfindAroundWalls Pathfinder = new AStarPathfindAroundWalls(Player.transform.position, new Vector3(1f, 1f, 1f));
                 AStarPathfind.Node InitalPosition = new AStarPathfind.Node();

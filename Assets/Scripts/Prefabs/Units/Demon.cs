@@ -3,18 +3,85 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SuperGrork : Unit {
+public class Demon : Unit {
 
-    public Player Player;
-    public Weapon Fist;
-    public float TickActionsEvery = 1f;
+    [SerializeField]
+    private Player Player;
+    [SerializeField]
+    private Weapon Fist;
+    [SerializeField]
+    private SpellProjectile FireSpell;
+    [SerializeField]
+    private float TickActionsEvery = 1f;
+    [SerializeField]
     private float TickActionsCurrentTimer = 0;
-    public float CastAuraSpellEvery = 5f;
-    private float CastAuraSpellCurrentTimer = 0;
+    [SerializeField]
     private bool DeadFlag = false;
 
     void Start() {
+        this.Hp = CalculateMaxHp();
+        this.Mp = CalculateMaxMp();
         this.Equipment = new EquipmentModel(new EquippedEntity[] { new EquippedEntity("Left", Fist) }, this);
+    }
+
+    private IEnumerator FireLazer() {
+        LayerMask ShootingMask = LayerMask.GetMask("Player", "Floor", "Walls");
+        RaycastHit ShootHit = new RaycastHit();
+        Physics.Linecast(
+            this.transform.position,
+            Player.transform.position,
+            out ShootHit,
+            ShootingMask
+        );
+        if (ShootHit.transform != null) {
+            Player p = ShootHit.transform.gameObject.GetComponent<Player>() as Player;
+            if (p != null) {
+                float totalArc = 180f;
+                float angle = 0f;
+                float totalDuration = 4f;
+                float minWait = 0.05f;
+                float curWait = 0f;
+                Quaternion fireAt = Quaternion.LookRotation(
+                    (this.transform.position - Player.transform.position).normalized
+                );
+                while (angle < totalArc) {
+                    while (curWait < minWait) {
+                        curWait += Time.deltaTime;
+                        yield return null;
+                    }
+                    angle += (curWait * totalArc)/totalDuration;
+                    curWait = 0;
+                    SpellProjectile s = Instantiate(
+                        FireSpell,
+                        new Vector3(
+                            this.transform.position.x,
+                            this.transform.position.y + 0.5f,
+                            this.transform.position.z
+                        ),
+                        Quaternion.Euler(
+                            fireAt.eulerAngles.x,
+                            fireAt.eulerAngles.y + angle,
+                            fireAt.eulerAngles.z - 10
+                        )
+                    ) as SpellProjectile;
+                    s.SetDirection(Quaternion.Euler(
+                        fireAt.eulerAngles.x,
+                        fireAt.eulerAngles.y + angle,
+                        fireAt.eulerAngles.z - 10
+                    ));
+                    s.SetCaster(this.gameObject);
+                    yield return null;
+                }
+            }
+            //wait until 
+            float coolDownMinWait = 0.5f;
+            float curCoolDownWait = 0f;
+            while (curCoolDownWait < coolDownMinWait) {
+                curCoolDownWait += Time.deltaTime;
+                yield return null;
+            }
+        }
+        this.InputLocked = false;
     }
 
     void Update() {
@@ -40,28 +107,25 @@ public class SuperGrork : Unit {
             return;
         }
 
+        float TickRequired = TickActionsEvery;
+
+        if (this.IsEnraged()) {
+            TickRequired = 0.33f;
+        }
         this.TickActionsCurrentTimer += Time.deltaTime;
-        this.CastAuraSpellCurrentTimer += Time.deltaTime;
-        if (!InputLocked && TickActionsCurrentTimer > TickActionsEvery) {
+        if (!InputLocked && TickActionsCurrentTimer > TickRequired) {
             TickActionsCurrentTimer = 0f;
-            if (CastAuraSpellCurrentTimer > CastAuraSpellEvery) {
-                CastAuraSpellCurrentTimer = 0f;
-                int mask = LayerMask.GetMask("Enemies");
-                Collider[] hits = Physics.OverlapSphere(this.transform.position, 4f, mask);
-                for (int x = 0; x < hits.Length; x++) {
-                    Collider c = hits[x];
-                    Skeleton ally = c.gameObject.GetComponent<Skeleton>() as Skeleton;
-                    if (ally != null) {
-                        ally.Enrage(1f);
-                    }
-                }
-                Animator a = this.GetComponentInChildren<Animator>() as Animator;
-                a.Play("Shout");
-                return;
-            }
             //if close by, then pathfind
             if ((this.transform.position - Player.transform.position).sqrMagnitude < 48f) {
                 this.InputLocked = true;
+                if ((this.transform.position - Player.transform.position).sqrMagnitude > 4f) {
+                    System.Random r = new System.Random();
+                    int n = r.Next(0, 100);
+                    if (n > 25) {
+                        StartCoroutine(FireLazer());
+                        return;
+                    }
+                }
                 AStarPathfindAroundWalls Pathfinder = new AStarPathfindAroundWalls(Player.transform.position, new Vector3(1f, 1f, 1f));
                 AStarPathfind.Node InitalPosition = new AStarPathfind.Node();
                 InitalPosition.position = this.transform.position;
@@ -101,6 +165,7 @@ public class SuperGrork : Unit {
     }
 
     void OnMouseDown(){
+        Debug.Log((this.transform.position - Player.transform.position).sqrMagnitude);
         if (DeadFlag) {
             return;
         }
@@ -115,7 +180,6 @@ public class SuperGrork : Unit {
             return;
         }
         Animator a = this.GetComponentInChildren<Animator>() as Animator;
-        a.Play("BatAttack");
         Weapon w = this.Equipment.Get("Left").GetComponent<Weapon>() as Weapon;
         u.TakeDamage(w.RollDice()+2);
         this.InputLocked = false;
@@ -126,7 +190,6 @@ public class SuperGrork : Unit {
             return;
         }
         Animator a = this.GetComponentInChildren<Animator>() as Animator;
-        a.Play("TakeDamage");
         this.Hp -= dmg;
     }
 }
