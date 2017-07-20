@@ -21,8 +21,11 @@ public class FloorSwitch : Switch {
         );
     }
 
-    void OnTriggerEnter() {
-        PerformInteractions();
+    void OnTriggerEnter(Collider other) {
+        Player p = other.GetComponent<Player>() as Player;
+        if (p != null) {
+            PerformInteractions();
+        }
     }
 
 }

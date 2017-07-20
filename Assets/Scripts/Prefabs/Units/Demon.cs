@@ -38,8 +38,8 @@ public class Demon : Unit {
             if (p != null) {
                 float totalArc = 180f;
                 float angle = 0f;
-                float totalDuration = 4f;
-                float minWait = 0.05f;
+                float totalDuration = 2.4f;
+                float minWait = 0.02f;
                 float curWait = 0f;
                 Quaternion fireAt = Quaternion.LookRotation(
                     (this.transform.position - Player.transform.position).normalized
@@ -55,19 +55,19 @@ public class Demon : Unit {
                         FireSpell,
                         new Vector3(
                             this.transform.position.x,
-                            this.transform.position.y + 0.5f,
+                            this.transform.position.y + 0.3f,
                             this.transform.position.z
                         ),
                         Quaternion.Euler(
                             fireAt.eulerAngles.x,
                             fireAt.eulerAngles.y + angle,
-                            fireAt.eulerAngles.z - 10
+                            fireAt.eulerAngles.z - 5
                         )
                     ) as SpellProjectile;
                     s.SetDirection(Quaternion.Euler(
                         fireAt.eulerAngles.x,
                         fireAt.eulerAngles.y + angle,
-                        fireAt.eulerAngles.z - 10
+                        fireAt.eulerAngles.z - 5
                     ));
                     s.SetCaster(this.gameObject);
                     yield return null;
@@ -116,7 +116,7 @@ public class Demon : Unit {
         if (!InputLocked && TickActionsCurrentTimer > TickRequired) {
             TickActionsCurrentTimer = 0f;
             //if close by, then pathfind
-            if ((this.transform.position - Player.transform.position).sqrMagnitude < 48f) {
+            if ((this.transform.position - Player.transform.position).sqrMagnitude < 64f) {
                 this.InputLocked = true;
                 if ((this.transform.position - Player.transform.position).sqrMagnitude > 4f) {
                     System.Random r = new System.Random();

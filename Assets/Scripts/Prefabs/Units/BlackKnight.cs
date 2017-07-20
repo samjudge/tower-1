@@ -87,13 +87,13 @@ public class BlackKnight : Unit {
                                     Quaternion.Euler(
                                         fireAt.eulerAngles.x,
                                         fireAt.eulerAngles.y + 90,
-                                        fireAt.eulerAngles.z - 20
+                                        fireAt.eulerAngles.z
                                     )
                                 ) as SpellProjectile;
                                 s.SetDirection(Quaternion.Euler(
                                     fireAt.eulerAngles.x,
                                     fireAt.eulerAngles.y + 90,
-                                    fireAt.eulerAngles.z - 20
+                                    fireAt.eulerAngles.z
                                 ));
                                 s.SetCaster(this.gameObject);
                                 this.InputLocked = false;
