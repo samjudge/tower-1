@@ -12,6 +12,9 @@ public class Bat : Unit {
     private bool DeadFlag = false;
 
     void Start() {
+        if (this.Player == null) {
+            this.Player = GameObject.Find("Player").GetComponent<Player>() as Player;
+        }
         this.Equipment = new EquipmentModel(new EquippedEntity[] { new EquippedEntity("Left", Fangs) },this);
     }
 

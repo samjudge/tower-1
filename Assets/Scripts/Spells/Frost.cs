@@ -9,6 +9,9 @@ public class Frost : SpellProjectile {
     public int DiceMaxRoll;
 
     private void Start() {
+        if (this.GetCaster() == null) {
+            this.SetCaster(GameObject.Find("Player"));
+        }
         Player p = GetCaster().GetComponent<Player>() as Player;
         if (p != null) {
             p.GetActionLog().WriteNewLine("Your veins turn to ice as you release the ice bolt!");

@@ -9,6 +9,9 @@ public class Spark : SpellProjectile {
     public int DiceMaxRoll;
 
     private void Start() {
+        if (this.GetCaster() == null) {
+            this.SetCaster(GameObject.Find("Player"));
+        }
         Player p = GetCaster().GetComponent<Player>() as Player;
         if (p != null) {
             p.GetActionLog().WriteNewLine("sparks fly from your fingertips!");

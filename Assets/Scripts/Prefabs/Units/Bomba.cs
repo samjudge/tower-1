@@ -12,6 +12,9 @@ public class Bomba : Unit{
     [SerializeField]
     private float explodeDamage = 20f;
     void Start() {
+        if (this.Player == null) {
+            this.Player = GameObject.Find("Player").GetComponent<Player>() as Player;
+        }
         this.Equipment = new EquipmentModel(new EquippedEntity[] {},this);
     }
 

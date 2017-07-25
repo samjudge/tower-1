@@ -19,6 +19,12 @@ public class Door : Blocker, Openable {
     private bool InMotion = false;
 
     private void Start() {
+        if (this.Player == null) {
+            this.Player = GameObject.Find("Player").GetComponent<Player>() as Player;
+        }
+        if (this.Hand == null) {
+            this.Hand = GameObject.Find("UI/UIBase/Hand").GetComponent<Hand>() as Hand;
+        }
         if (StartOpen) {
             this.ToggleOpen();
         }

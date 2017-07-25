@@ -13,6 +13,12 @@ public class Chest : MonoBehaviour {
     [SerializeField]
     private bool isOpended = false;
 
+    void Start() {
+        if (this.Player == null) {
+            this.Player = GameObject.Find("Player").GetComponent<Player>() as Player;
+        }
+    }
+
     void OnMouseDown(){
         if ((this.transform.position - Player.transform.position).sqrMagnitude <= 1.2){
             if (!isOpended){

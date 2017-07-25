@@ -15,7 +15,11 @@ public class FireTrap : MonoBehaviour, Togglable {
     private float FireSpellEvery = 2f;
     private float FireSpellCurrentTimer = 0;
 
-    void Start() {}
+    void Start() {
+        if (this.Player == null) {
+            this.Player = GameObject.Find("Player").GetComponent<Player>() as Player;
+        }
+    }
 
     void Update() {
         if (FireSpellEvery != 0f) {
